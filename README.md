@@ -1,0 +1,14 @@
+# brancher | 브랜처
+
+> Branch out. Build ventures.
+> 새로운 가지를 뻗고, 사업으로 키운다.
+
+브랜처 브랜드의 기준 저장소입니다. 개별 프로젝트는 각자의 저장소에서 만들고, 여기서는 **브랜드**를 다룹니다.
+
+| 파일 | 내용 |
+|---|---|
+| [`brand/brand-book.md`](brand/brand-book.md) | 브랜드 기준 — 이름, 로고, 원칙, 보이스, 컬러, 표기 규칙 |
+| [`brand/review-v1.md`](brand/review-v1.md) | 브랜드 진단 v1 — 강점, 위험, 다음 할 일 |
+| [`branches/README.md`](branches/README.md) | 브랜치(프로젝트) 목록, 상태, 기록 템플릿 |
+| [`channels/instagram.md`](channels/instagram.md) | 인스타그램 프로필, 캡션, 콘텐츠 계획 |
+| [`decisions.md`](decisions.md) | 결정 기록과 결정 대기 질문 |
