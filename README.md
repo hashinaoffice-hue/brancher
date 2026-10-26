@@ -9,6 +9,7 @@
 |---|---|
 | [`brand/brand-book.md`](brand/brand-book.md) | 브랜드 기준 — 이름, 로고, 원칙, 보이스, 컬러, 표기 규칙 |
 | [`brand/logo/`](brand/logo/README.md) | 로고 원본, 다크·단색 버전, 파비콘, 프로필 이미지 |
+| [`brand/name-check.md`](brand/name-check.md) | 이름 점검 — 상표, 도메인, 핸들 |
 | [`brand/review-v1.md`](brand/review-v1.md) | 브랜드 진단 v1 — 강점, 위험, 다음 할 일 |
 | [`branches/README.md`](branches/README.md) | 브랜치(프로젝트) 목록, 상태, 기록 템플릿 |
 | [`channels/instagram.md`](channels/instagram.md) | 인스타그램 프로필, 캡션, 콘텐츠 계획 |

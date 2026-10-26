@@ -69,6 +69,8 @@
 
 ## 3. 이름 보호 — 체크리스트
 
+> 1차 웹 점검 결과는 [`name-check.md`](name-check.md).
+
 - [ ] 상표: KIPRIS에서 `브랜처` / `brancher` 검색 (제35류 사업관리·컨설팅, 제42류 소프트웨어, 제9류 앱)
 - [ ] 도메인: `brancher.co`, `brancher.kr`, `brancher.studio` 등
 - [ ] 핸들: Instagram, Threads, X, LinkedIn, GitHub, YouTube — 같은 핸들로 선점

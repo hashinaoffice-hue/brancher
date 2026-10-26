@@ -10,6 +10,7 @@
 | Q2 | 'Business inquiry'로 무엇을 받는가? | 외주 / 공동 창업·제휴 / 투자 / 전부 | 외주 제외. 공동 창업·제휴 중심 |
 | Q3 | 닫힌(closed) 브랜치를 공개하는가? | 공개 / 비공개 | 공개 — 원칙과 일치하고 가장 큰 차별점 |
 | Q4 | 브랜치 오픈 주기는? | 분기 1개 / 반기 1개 / 정하지 않음 | 목표 주기를 하나 정해서 공개 |
+| Q6 | 통일 핸들은? | `brancher.studio` / `brancher_kr` / `brancherhq` | `brancher.studio` (GitHub은 `brancher-studio`) — `name-check.md` |
 | Q5 | 제품 브랜드와의 관계는? | 제품 안에 "by brancher" 표기 / 표기 안 함 | 가볍게 표기 (앱 정보·웹사이트 하단) |
 
 ## 결정됨
