@@ -14,4 +14,6 @@
 | [`brand/review-v1.md`](brand/review-v1.md) | 브랜드 진단 v1 — 강점, 위험, 다음 할 일 |
 | [`branches/README.md`](branches/README.md) | 브랜치(프로젝트) 목록, 상태, 기록 템플릿 |
 | [`channels/instagram.md`](channels/instagram.md) | 인스타그램 프로필, 캡션, 콘텐츠 계획 |
+| [`channels/instagram/posts/`](channels/instagram/posts/) | 게시물 원본(HTML)과 이미지 — `node tools/render-slides.js <slides.html>`로 다시 뽑기 |
+| [`brand/fonts/`](brand/fonts/) | Pretendard (OFL 1.1) — 게시물 원본이 사용 |
 | [`decisions.md`](decisions.md) | 결정 기록과 결정 대기 질문 |

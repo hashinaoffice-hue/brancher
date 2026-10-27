@@ -46,6 +46,8 @@ branch 01 ▸ 핸드머니 · 자산관리 앱 ↓
 
 ## 첫 피드
 
+> 제작 완료: [`instagram/posts/001-intro/`](instagram/posts/001-intro/README.md) — 캐러셀 4장 (선언 → 정체 → 지금 → 도전)
+
 **이미지:** 블랙 배경 + 워드마크 `brancher.` + `Branch out. Build ventures.`
 
 **캡션**
@@ -86,7 +88,7 @@ branch 01 ▸ 핸드머니 · 자산관리 앱 ↓
 
 | 순서 | 기둥 | 내용 |
 |---|---|---|
-| 1 | Brand | 선언 — 블랙 배경, 워드마크, `Branch out. Build ventures.` (위 첫 피드) |
+| 1 | Brand | 선언 — 캐러셀 4장 (`posts/001-intro`, 제작 완료) |
 | 2 | Brand | 이름과 로고 — 줄기 = 기반, 45° 가지 = 시도, 그린 스퀘어 = 결과물이자 마침표 |
 | 3 | Brand | 세 원칙 — Branch out / Ship fast / Merge what works (캐러셀) |
 | 4 | Product | `branch 01 ▸ 핸드머니` 미리 보기 — 계획·기록·검토 |
