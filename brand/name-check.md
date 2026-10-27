@@ -13,7 +13,7 @@
 | 한국 상표 (KIPRIS) | 직접 조회 불가 | ⚪ 직접 확인 |
 | 도메인 | 직접 조회 불가 | ⚪ 직접 확인 |
 | GitHub `brancher` | **사용 중** (2014년경 생성된 개인 계정) | 🔴 불가 |
-| Instagram `brancher` | 직접 조회 불가 | ⚪ 직접 확인 |
+| Instagram | **`@brancher.dev` 개설 완료** (2026.10.27) | 🟢 확보 |
 
 ## 해석
 
@@ -42,6 +42,11 @@
 → 제안: **`brancher.studio`** (인스타·스레드) / **`brancher-studio`** (GitHub). 도메인도 `brancher.studio`가 비어 있다면 핸들·도메인이 완전히 일치합니다.
 
 ## 직접 확인할 것
+
+> 2026.10.27 인스타그램을 `@brancher.dev`로 개설. 이제 기준 핸들은 `brancher.dev`이며, 아래는 이 기준으로 확인합니다.
+
+- [ ] **도메인 `brancher.dev`** — 가장 먼저. 핸들과 도메인이 같아지고, 메일도 `hello@brancher.dev`로 옮길 수 있습니다
+- [ ] **GitHub** — `brancher-dev` 조직
 
 - [ ] **KIPRIS** (kipris.or.kr) — `브랜처`, `brancher`, `브랜쳐`(유사 표기) / 35·42·9류
 - [ ] **도메인** — `brancher.studio`, `brancher.kr`, `brancher.co.kr`, `brancher.co`, `brancher.com` (가비아·후이즈 등에서 조회)
