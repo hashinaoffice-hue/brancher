@@ -9,7 +9,7 @@
 | Q3 | 닫힌(closed) 브랜치를 공개하는가? | 공개 / 비공개 | 공개. 단 청중이 사용자이므로 종료 안내·데이터 내보내기 등 사용자 보호를 먼저 |
 | Q4 | 브랜치 오픈 주기는? | 분기 1개 / 반기 1개 / 정하지 않음 | 목표 주기를 하나 정해서 공개 |
 | Q5 | 제품 브랜드와의 관계는? | 제품 안에 "by brancher" 표기 / 표기 안 함 | 가볍게 표기 (앱 정보·웹사이트 하단) |
-| Q6 | 통일 핸들은? | `brancher.studio` / `brancher_kr` / `brancherhq` | `brancher.studio` (GitHub은 `brancher-studio`) — `name-check.md` |
+| Q6 | 통일 핸들은? | `brancher.studio` / `brancher.lab` / `brancher_kr` | `brancher.studio` (GitHub은 `brancher-studio`) — `name-check.md`. 문의 메일이 `brancher.lab`이므로 `brancher.lab` 통일도 후보 |
 
 ## 결정됨
 
