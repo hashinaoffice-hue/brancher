@@ -49,6 +49,6 @@ Branch out. Build ventures.
 
 | 쓰는 곳 | 문구 |
 |---|---|
-| 인스타 바이오 | `광고·제휴 문의 DM` |
-| 웹사이트·노션 | `광고 · 제휴 · 기타 문의 — brancher.lab@gmail.com` |
+| 인스타 바이오 | `brancher.lab@gmail.com` |
+| 웹사이트·노션 | `문의 — brancher.lab@gmail.com` |
 | 앱 내 정보 화면 | `made by brancher · brancher.lab@gmail.com` |
