@@ -8,7 +8,7 @@
 | 파일 | 내용 |
 |---|---|
 | [`brand/brand-book.md`](brand/brand-book.md) | 브랜드 기준 — 이름, 로고, 원칙, 보이스(고객용 말투 포함), 컬러, 서체, 표기 규칙 |
-| [`brand/intro.md`](brand/intro.md) | 소개 문구 세트 — 기본(고객·메이커)·파트너용, 한 줄·세 줄·소개 페이지 |
+| [`brand/intro.md`](brand/intro.md) | 소개 문구 세트 — 한 줄, 세 줄, 소개 페이지 (브랜처만) |
 | [`brand/logo/`](brand/logo/README.md) | 로고 원본, 다크·단색 버전, 파비콘, 프로필 이미지 |
 | [`brand/name-check.md`](brand/name-check.md) | 이름 점검 — 상표, 도메인, 핸들 |
 | [`brand/review-v1.md`](brand/review-v1.md) | 브랜드 진단 v1 — 강점, 위험, 다음 할 일 |
