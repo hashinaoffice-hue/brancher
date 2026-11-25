@@ -45,7 +45,8 @@
 
 > 2026.10.27 인스타그램을 `@brancher.dev`로 개설. 이제 기준 핸들은 `brancher.dev`이며, 아래는 이 기준으로 확인합니다.
 
-- [ ] **도메인 `brancher.dev`** — 가장 먼저. 핸들과 도메인이 같아지고, 메일도 `hello@brancher.dev`로 옮길 수 있습니다
+- [x] ~~**도메인 `brancher.dev`**~~ — 이미 등록되어 있음 (2026.11.25 확인)
+- [ ] **도메인 `brancher.kr`** — 국내 등록업체에서 구매, 네임서버는 Cloudflare. 메일은 추후 `hello@brancher.kr` 검토
 - [ ] **GitHub** — `brancher-dev` 조직
 
 - [ ] **KIPRIS** (kipris.or.kr) — `브랜처`, `brancher`, `브랜쳐`(유사 표기) / 35·42·9류
