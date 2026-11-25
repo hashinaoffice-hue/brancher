@@ -15,6 +15,7 @@
 | [`branches/README.md`](branches/README.md) | 브랜치(프로젝트) 목록, 상태, 기록 템플릿 |
 | [`channels/instagram.md`](channels/instagram.md) | 인스타그램 프로필, 캡션, 콘텐츠 계획 |
 | [`channels/web.md`](channels/web.md) | 포트폴리오 웹앱 — 공개 페이지, 관리자 모드, 숫자의 정의, 내놓는 순서 |
+| [`channels/web-concept-v4.md`](channels/web-concept-v4.md) | 웹 콘셉트 v4 — 로고 안을 걷는 홈페이지, 장면·색 비중·스토리보드 |
 | [`channels/web-direction.md`](channels/web-direction.md) | 웹 연출·기능 설계 — 시안 v1 진단, 모션 원칙, 장면별 연출, 추가 기능 |
 | [`channels/instagram/posts/`](channels/instagram/posts/) | 게시물 원본(HTML)과 이미지 — `node tools/render-slides.js <slides.html>`로 다시 뽑기 |
 | [`brand/fonts/`](brand/fonts/) | Pretendard (OFL 1.1) — 게시물 원본이 사용 |
