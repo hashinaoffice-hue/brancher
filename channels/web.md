@@ -1,7 +1,7 @@
 # Web — 포트폴리오 웹앱
 
-> 상태: 시안 v3 (2026.11.25) — https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 (비공개 링크, 같은 주소로 갱신)
-> v3: 상단 메뉴 + 섹션별 구성(머리 · 만든 것 · 방식 · 문의 · 바닥), PC·모바일 반응형
+> 상태: 시안 v4 (2026.11.25) — https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 (비공개 링크, 같은 주소로 갱신)
+> v4: 로고 안을 걷는 홈페이지 — [`web-concept-v4.md`](web-concept-v4.md). v3(섹션형)는 같은 링크의 이전 버전
 > 주소 `brancher.kr`. 구현 위치는 Q10. 다음 시안의 연출·기능 설계: [`web-direction.md`](web-direction.md)
 
 ## 역할
