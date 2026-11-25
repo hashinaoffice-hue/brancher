@@ -1,6 +1,7 @@
 # Web — 포트폴리오 웹앱
 
-> 상태: 기획 (2026.11.25). 주소 `brancher.kr`. 구현 위치는 Q10. 시안은 아티팩트로 먼저 만든다 (아래 '만드는 방법').
+> 상태: 시안 v1 (2026.11.25) — https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 (비공개 링크)
+> 주소 `brancher.kr`. 구현 위치는 Q10.
 
 ## 역할
 
