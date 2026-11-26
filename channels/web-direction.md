@@ -1,5 +1,7 @@
 # Web 연출·기능 설계 — 시안 v2 기획
 
+> **지난 기획 (기록용).** 모션 원칙 '동사 셋'(뻗는다 · 내놓는다 · 키운다)과 관리자 기능 목록은 아직 참고한다. 장면 구성은 v4([`web-concept-v4.md`](web-concept-v4.md))로 대체됨.
+
 > 2026.11.25. [시안 v1](https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5)을 진단하고, v2에서 바꾸고 더할 것을 정한다. 승인되면 시안에 반영한다.
 > 기준: [`web.md`](web.md) · [`../brand/brand-book.md`](../brand/brand-book.md)
 

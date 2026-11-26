@@ -1,8 +1,7 @@
 # Web — 포트폴리오 웹앱
 
-> 상태: 시안 v4 (2026.11.25) — https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 (비공개 링크, 같은 주소로 갱신)
-> v4: 로고 안을 걷는 홈페이지 — [`web-concept-v4.md`](web-concept-v4.md). v3(섹션형)는 같은 링크의 이전 버전
-> 주소 `brancher.kr`. 구현 위치는 Q10. 다음 시안의 연출·기능 설계: [`web-direction.md`](web-direction.md)
+> **첫 기획 (2026.11.25).** 아직 유효한 부분: 관리자 모드 · 인사이트 · 숫자의 정의 · 내놓는 순서 · 기술 조건.
+> 공개 페이지의 구성과 카피는 대체됨 → 콘셉트 [`web-concept-v4.md`](web-concept-v4.md), 카피 [`web-copy.md`](web-copy.md). 현재 상태 → [`../status.md`](../status.md)
 
 ## 역할
 
