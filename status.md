@@ -40,8 +40,9 @@
 ## 웹
 
 - **콘셉트:** 로고 안을 걷는 홈페이지 — [`channels/web-concept-v4.md`](channels/web-concept-v4.md)
-- **시안 v4.12:** https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 — 지금 '링크가 있는 누구나 볼 수 있음'
-- **장면:** 서명 → 이름 → 줄기 → 가지 → 마침표 → 정원 → 문의 → 물러남 (약 14.6화면)
+- **시안 A (v4.12):** https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 — 지금 '링크가 있는 누구나 볼 수 있음'
+- **시안 B (v4.13):** https://claude.ai/artifact/8u6WQKJ7sbiqVVtanqALk2 — 비공개. A와 카피는 같고 시각 · 연출 · 길이만 다름 → [`channels/web/prototype-b/`](channels/web/prototype-b/README.md). **A/B 결정 대기 (Q17)**
+- **장면:** 서명 → 이름 → 줄기 → 가지 → 마침표 → 정원 → 문의 → 물러남 (A 약 14.6화면 · B 약 11화면)
 - **카피 확정본:** [`channels/web-copy.md`](channels/web-copy.md)
 - **원본:** [`channels/web/prototype/src.html`](channels/web/prototype/README.md) · 다시 뽑기 `python3 tools/build-web-prototype.py`
 - **관리자 모드:** 시안 안에 있음(예시 데이터). 디자인은 v3 그대로 — 다시 만들 차례
@@ -57,6 +58,7 @@
 
 | # | 질문 | 컨설턴트 제안 |
 |---|---|---|
+| Q17 | 웹 시안 A(v4.12)와 B(v4.13) 중 어느 쪽으로 | B — 그린 진입 · 정원 톤 · 길이를 고친 쪽 |
 | Q10 | 운영 웹 코드를 어디에 두나 | 이 저장소 `web/` |
 | Q8 | 인사이트를 직접 만드나 | 분석 도구 + 관리자 화면 한 장 |
 | Q3 | 닫은 가지를 공개하나 | 공개 — 정원의 '가지치기'로 |
@@ -79,7 +81,7 @@
 | 소개 문구 | `brand/intro.md` |
 | 로고 파일과 쓰는 법 | `brand/logo/README.md` |
 | 왜 그렇게 정했나 | `decisions.md` |
-| 웹 콘셉트 · 버전 기록 | `channels/web-concept-v4.md` |
+| 웹 콘셉트 · 버전 기록 | `channels/web-concept-v4.md` · B안 차이 `channels/web/prototype-b/README.md` |
 | 웹 문구 | `channels/web-copy.md` |
 | 관리자 · 인사이트 · 숫자의 정의 | `channels/web.md` |
 | 인스타 | `channels/instagram.md` |
