@@ -92,6 +92,9 @@ p, ol, ul, dl, dd { margin: 0; }
 .facts-row small { font-size: 12px; font-weight: 600; color: var(--dim); }
 .facts-row b { font-size: clamp(20px, 2vw, 26px); font-weight: 700; }
 @media (max-width: 699px) { .sc-2 { left: 44%; } }
+.dict .pron { font-weight: 600; font-size: 0.5em; color: var(--muted); letter-spacing: 0; margin-left: 6px; }
+.senses { padding-left: 1.4em; display: grid; gap: 8px; color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
+.senses li::marker { color: var(--fg); font-weight: 600; }
 
 /* S3 branch: one verb, below-right of the diagonal */
 .sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: 10%; width: min(480px, 58%); display: grid; gap: 12px; }
@@ -102,6 +105,7 @@ p, ol, ul, dl, dd { margin: 0; }
 /* S4 gap */
 .sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; display: grid; gap: 10px; justify-items: center; }
 .sc-4 .big { font-size: clamp(28px, 4vw, 56px); }
+.sc-4 .sub { color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 .br-m { display: none; }
 @media (max-width: 699px) { .br-m { display: inline; } }
 
@@ -165,6 +169,7 @@ form { display: grid; gap: 12px; }
 .sc-7 { left: 0; right: 0; bottom: 7%; text-align: center; display: grid; gap: 18px; justify-items: center; }
 .sc-7 .big { font-size: clamp(22px, 2.8vw, 36px); }
 .sc-7 .sign { color: var(--muted); font-weight: 600; }
+.sc-7 .parts { color: var(--dim); font-size: 14px; font-weight: 600; margin-top: -8px; }
 .foot-meta { display: flex; gap: 6px 18px; flex-wrap: wrap; justify-content: center; color: var(--dim); font-size: 14px; }
 .foot-meta a { color: var(--muted); }
 
@@ -386,13 +391,24 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
   <main class="ov" id="ov">
     <section class="sc sc-0 gutter" data-in="-1" data-out="1.0" data-scene="0" aria-label="브랜처">
       <p class="kicker">가지를 뻗는 사람</p>
-      <h1 class="big">빠르게 만들고, 천천히 키운다.</h1>
+      <h1 class="big">편리하고 즐거운 서비스를 만듭니다.</h1>
       <div class="hint"><i></i>스크롤</div>
     </section>
 
-    <section class="sc sc-2" data-in="2.0" data-out="3.65" data-scene="1" aria-labelledby="s2t">
-      <p class="eyebrow">브랜처</p>
-      <h2 class="big" id="s2t">한 사람이<br>뻗고, 가꿉니다.</h2>
+    <section class="sc sc-2 dict" data-in="1.95" data-out="2.9" data-scene="1" aria-labelledby="s2n">
+      <p class="eyebrow">이름</p>
+      <h2 class="big" id="s2n">brancher <span class="pron">[브랜처]</span></h2>
+      <ol class="senses">
+        <li>가지를 뻗는 사람. branch(가지) + -er(사람).</li>
+        <li>개발자의 말로, 새 시도를 위해 '브랜치'를 따는 사람.</li>
+        <li>소리 내어 읽으면 '벤처'와 닮았다. 우연은 아니다.</li>
+      </ol>
+    </section>
+
+    <section class="sc sc-2" data-in="2.9" data-out="3.75" data-scene="1" aria-labelledby="s2t">
+      <p class="eyebrow">줄기</p>
+      <h2 class="big" id="s2t">모든 가지는<br>이 줄기 하나에서 나옵니다.</h2>
+      <p class="sub">흔들리지 않는 기반. 이 줄기는 한 사람이 지킵니다.</p>
       <div class="facts-row tnum">
         <div><small>운영</small><b>1인</b></div>
         <div><small>시작</small><b>2026.10</b></div>
@@ -402,19 +418,20 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
     <section class="sc sc-3" data-in="4.0" data-out="6.25" data-scene="2" aria-labelledby="s3t">
       <p class="eyebrow">뻗는다 · Branch out</p>
-      <h2 class="big" id="s3t">모든 서비스는 하나의 가지에서 시작됩니다.</h2>
-      <p class="sub">분야를 가리지 않고, 새 아이디어로 가지를 뻗습니다.</p>
+      <h2 class="big" id="s3t">가지 하나가,<br>새로운 시도 하나입니다.</h2>
+      <p class="sub">분야를 가리지 않고, 새 아이디어로 뻗습니다.</p>
     </section>
 
     <section class="sc sc-4 gutter" id="sc4" data-in="6.6" data-out="7.6" data-scene="3" aria-labelledby="s4t">
-      <p class="eyebrow">내놓는다 · Ship fast</p>
+      <p class="eyebrow">내놓는다 · Ship with care</p>
       <h2 class="big" id="s4t">내놓는 순간이 <br class="br-m">마침표입니다.</h2>
+      <p class="sub">가지 끝의 그린 스퀘어는 <br class="br-m">오래 다듬어 내놓은 결과물입니다.</p>
     </section>
 
     <div class="garden" id="garden" aria-hidden="true"><svg id="garden-svg"></svg></div>
     <section class="sc sc-g gutter" data-in="7.8" data-out="10.65" data-scene="4" aria-labelledby="s5t">
       <div class="wrap">
-        <div><p class="eyebrow">키운다</p><h2 class="big" id="s5t">브랜처의 정원</h2><p class="lead">반응이 온 가지만 키웁니다. 필요한 것을 골라 쓰세요.</p></div>
+        <div><p class="eyebrow">키운다</p><h2 class="big" id="s5t">브랜처의 정원</h2><p class="lead">반응이 온 가지만 키웁니다. 필요한 것을 골라, 일상 곁에 두세요.</p></div>
         <ol class="cards" id="cards"></ol>
       </div>
     </section>
@@ -449,6 +466,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
     <section class="sc sc-7 gutter" data-in="12.8" data-out="999" data-scene="6" aria-label="brancher">
       <p class="big">지나온 길이 brancher입니다.</p>
+      <p class="parts">줄기 · 가지 · 결과물</p>
       <p class="sign">Branch out. Build ventures.</p>
       <div class="foot-meta">
         <a href="https://www.instagram.com/brancher.dev/" target="_blank" rel="noopener">@brancher.dev</a>
