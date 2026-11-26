@@ -93,20 +93,14 @@ p, ol, ul, dl, dd { margin: 0; }
 .facts-row b { font-size: clamp(20px, 2vw, 26px); font-weight: 700; }
 @media (max-width: 699px) { .sc-2 { left: 44%; } }
 
-/* S3 branch: stations below-right of the diagonal */
-.sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: 9%; width: min(460px, 60%); display: grid; gap: 16px; }
-.sc-3 .title { font-size: clamp(17px, 1.6vw, 21px); font-weight: 700; color: var(--muted); }
-.stations { list-style: none; padding: 0; display: grid; gap: 14px; }
-.stations li { display: grid; gap: 2px; color: var(--dim); transition: color var(--t1); }
-.stations strong { font-size: clamp(24px, 2.8vw, 36px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-.stations strong span { font-size: 14px; font-weight: 600; margin-left: 8px; }
-.stations p { font-size: 15px; }
-.stations li.on { color: var(--fg); }
-.stations li.on p { color: var(--muted); }
-@media (max-width: 699px) { .sc-3 { left: 36%; width: auto; bottom: 7%; } .stations p { display: none; } }
+/* S3 branch: one verb, below-right of the diagonal */
+.sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: 10%; width: min(480px, 58%); display: grid; gap: 12px; }
+.sc-3 .big { font-size: clamp(24px, 3vw, 40px); }
+.sc-3 .sub { color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
+@media (max-width: 699px) { .sc-3 { left: 36%; width: auto; bottom: 7%; } }
 
 /* S4 gap */
-.sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; }
+.sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; display: grid; gap: 10px; justify-items: center; }
 .sc-4 .big { font-size: clamp(28px, 4vw, 56px); }
 .br-m { display: none; }
 @media (max-width: 699px) { .br-m { display: inline; } }
@@ -121,6 +115,7 @@ p, ol, ul, dl, dd { margin: 0; }
 .sc-g .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
 .sc-g .eyebrow { color: var(--on-green-2); }
 .sc-g .big { font-size: clamp(30px, 4.6vw, 60px); }
+.sc-g .lead { color: var(--on-green-2); font-size: clamp(16px, 1.5vw, 19px); margin-top: 10px; }
 .sc-g :focus-visible { outline-color: var(--on-green); }
 .cards { list-style: none; padding: 0; display: grid; gap: 14px; }
 @media (min-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
@@ -390,15 +385,14 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
   <main class="ov" id="ov">
     <section class="sc sc-0 gutter" data-in="-1" data-out="1.0" data-scene="0" aria-label="브랜처">
-      <p class="kicker">1인 개발 브랜드</p>
+      <p class="kicker">가지를 뻗는 사람</p>
       <h1 class="big">빠르게 만들고, 천천히 키운다.</h1>
       <div class="hint"><i></i>스크롤</div>
     </section>
 
     <section class="sc sc-2" data-in="2.0" data-out="3.65" data-scene="1" aria-labelledby="s2t">
-      <p class="eyebrow">소개</p>
-      <h2 class="big" id="s2t">브랜처는<br>1인 개발 브랜드입니다.</h2>
-      <p class="sub">직접 만든 서비스를 하나씩 내놓고, 반응이 오는 것을 키웁니다.</p>
+      <p class="eyebrow">브랜처</p>
+      <h2 class="big" id="s2t">한 사람이<br>뻗고, 가꿉니다.</h2>
       <div class="facts-row tnum">
         <div><small>운영</small><b>1인</b></div>
         <div><small>시작</small><b>2026.10</b></div>
@@ -407,22 +401,20 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     </section>
 
     <section class="sc sc-3" data-in="4.0" data-out="6.25" data-scene="2" aria-labelledby="s3t">
-      <h2 class="title" id="s3t">모든 서비스는 하나의 가지에서 시작됩니다.</h2>
-      <ol class="stations" id="stations">
-        <li><strong>뻗는다<span>Branch out</span></strong><p>새로운 아이디어로 가지를 뻗습니다.</p></li>
-        <li><strong>내놓는다<span>Ship fast</span></strong><p>작게 만들어 일찍 내놓습니다.</p></li>
-        <li><strong>키운다<span>Merge what works</span></strong><p>반응이 오는 것만, 천천히 키웁니다.</p></li>
-      </ol>
+      <p class="eyebrow">뻗는다 · Branch out</p>
+      <h2 class="big" id="s3t">모든 서비스는 하나의 가지에서 시작됩니다.</h2>
+      <p class="sub">분야를 가리지 않고, 새 아이디어로 가지를 뻗습니다.</p>
     </section>
 
-    <section class="sc sc-4 gutter" id="sc4" data-in="6.6" data-out="7.6" data-scene="3" aria-label="내놓기">
-      <p class="big">내놓는 순간이 <br class="br-m">마침표입니다.</p>
+    <section class="sc sc-4 gutter" id="sc4" data-in="6.6" data-out="7.6" data-scene="3" aria-labelledby="s4t">
+      <p class="eyebrow">내놓는다 · Ship fast</p>
+      <h2 class="big" id="s4t">내놓는 순간이 <br class="br-m">마침표입니다.</h2>
     </section>
 
     <div class="garden" id="garden" aria-hidden="true"><svg id="garden-svg"></svg></div>
     <section class="sc sc-g gutter" data-in="7.8" data-out="10.65" data-scene="4" aria-labelledby="s5t">
       <div class="wrap">
-        <div><p class="eyebrow">만든 것</p><h2 class="big" id="s5t">지금까지 뻗은 가지</h2></div>
+        <div><p class="eyebrow">키운다</p><h2 class="big" id="s5t">브랜처의 정원</h2><p class="lead">반응이 온 가지만 키웁니다. 필요한 것을 골라 쓰세요.</p></div>
         <ol class="cards" id="cards"></ol>
       </div>
     </section>
@@ -431,7 +423,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
       <div class="wrap contact">
         <div class="contact-side">
           <div><p class="eyebrow">문의</p><h2 class="big" id="s6t">메일로 연락 주세요.</h2></div>
-          <p class="sub">메일이나 양식으로 보내주세요. 확인하고 답장합니다.</p>
+          <p class="sub">양식으로 보내셔도 됩니다.</p>
           <div class="mail diag">
             <span class="mail-addr" id="mail-addr">brancher.lab@gmail.com</span>
             <button type="button" class="btn-line diag" id="copy-mail">복사</button>
@@ -470,9 +462,9 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
   <nav class="chrome mini" aria-label="장면 이동">
     <ul class="mini-menu" id="mini-menu" hidden>
       <li><button type="button" data-jump="0">처음</button></li>
-      <li><button type="button" data-jump="2.7">소개</button></li>
-      <li><button type="button" data-jump="5.0">방식</button></li>
-      <li><button type="button" data-jump="9.3">만든 것</button></li>
+      <li><button type="button" data-jump="2.7">줄기</button></li>
+      <li><button type="button" data-jump="5.0">가지</button></li>
+      <li><button type="button" data-jump="9.3">정원</button></li>
       <li><button type="button" data-jump="11.3">문의</button></li>
       <li><button type="button" data-jump="13.4">끝</button></li>
     </ul>
@@ -527,7 +519,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     now: { v: 87, p: 0, src: [58, 17, 4, 8], go: null, conv: '2.3%' }
   };
   var SRC = ['인스타 바이오', '인스타 스토리', '검색', '직접'];
-  var REACH = { now: [['서명', 100], ['소개', 81], ['방식', 63], ['만든 것', 48], ['문의', 37]], after: [['서명', 100], ['소개', 79], ['방식', 61], ['만든 것', 47], ['문의', 35]] };
+  var REACH = { now: [['서명', 100], ['줄기', 81], ['가지', 63], ['정원', 48], ['문의', 37]], after: [['서명', 100], ['줄기', 79], ['가지', 61], ['정원', 47], ['문의', 35]] };
   var DAU = [44, 39, 31, 28, 26, 25, 27, 24, 23, 25, 26, 24, 27, 28, 26, 29, 30, 28, 31, 32, 30, 33, 34, 33, 35, 36, 34, 37, 36, 38];
   var MARKS = [[0, '출시'], [17, '인스타 게시물 007']];
   var CRIT = [{ name: 'D1 리텐션', goal: 35, cur: 41, unit: '%' }, { name: 'D30 리텐션', goal: 20, cur: 17, unit: '%' }, { name: 'MAU', goal: 300, cur: 286, unit: '' }];
@@ -597,7 +589,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
   var P_END = 13.6;
   /* With reduced motion the camera cuts to each scene's resting frame instead of flying. */
   var HOLD = [[1.2, 0], [3.7, 3], [6.3, 6], [7.6, 7], [12.4, 9], [99, 11]];
-  var SCENES = ['brancher', '소개', '방식', '내놓기', '만든 것', '문의', 'brancher'];
+  var SCENES = ['brancher', '줄기', '가지', '마침표', '정원', '문의', 'brancher'];
   var C0 = 236.51, C1 = 309.11; /* branch growth front: x from the stem's edge to the far tip corner */
 
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
@@ -726,9 +718,6 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
       ['sym-sq'].forEach(function (id) { var q = $(id); if (!q) return; q.style.opacity = land ? 1 : 0; q.style.transform = land ? 'none' : 'scale(1.35)'; });
     }
 
-    /* stations along the branch */
-    var gi = clamp(Math.floor(((p - 4.0) / 2.1) * 3), 0, 2);
-    Array.prototype.forEach.call($('stations').children, function (li, i) { li.classList.toggle('on', i === gi); });
 
     /* garden: six layers fade in one after another (back to front) as we enter the green,
        and fade out one after another (front to back) before the contact scene. No movement. */
