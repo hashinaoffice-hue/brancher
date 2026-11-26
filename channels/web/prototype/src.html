@@ -95,6 +95,7 @@ p, ol, ul, dl, dd { margin: 0; }
 .dict .pron { font-weight: 600; font-size: 0.5em; color: var(--muted); letter-spacing: 0; margin-left: 6px; }
 .senses { padding-left: 1.4em; display: grid; gap: 8px; color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 .senses li::marker { color: var(--fg); font-weight: 600; }
+.senses .motto { display: block; margin-top: 4px; color: var(--fg); font-weight: 700; font-size: 1.15em; letter-spacing: -0.01em; text-wrap: balance; }
 
 /* S3 branch: one verb, below-right of the diagonal */
 .sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: 10%; width: min(480px, 58%); display: grid; gap: 12px; }
@@ -401,7 +402,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
       <ol class="senses">
         <li>가지를 뻗는 사람. branch(가지) + -er(사람).</li>
         <li>개발자의 말로, 새 시도를 위해 '브랜치'를 따는 사람.</li>
-        <li>소리 내어 읽으면 '벤처'와 닮았다. 우연은 아니다.</li>
+        <li>소리 내어 읽으면 '벤처'. <b class="motto" lang="en">Every branch is a venture.</b></li>
       </ol>
     </section>
 
