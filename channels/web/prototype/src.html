@@ -113,6 +113,11 @@ p, ol, ul, dl, dd { margin: 0; }
 
 /* S5–S6 inside the green: black type */
 .sc-g { left: 0; right: 0; top: 50%; transform: translateY(-50%); color: var(--on-green); }
+/* Garden frame for 'made': layered foliage around the edges, drawn only from the brand's diagonal-round shape
+   (the brand book: every form reads as a leaf pointing up-right). Only in this scene. */
+.garden { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+.garden svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.garden g { transform-box: view-box; transform-origin: 50% 50%; will-change: transform; }
 .sc-g .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
 .sc-g .eyebrow { color: var(--on-green-2); }
 .sc-g .big { font-size: clamp(30px, 4.6vw, 60px); }
@@ -414,6 +419,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
       <p class="big">내놓는 순간이 <br class="br-m">마침표입니다.</p>
     </section>
 
+    <div class="garden" id="garden" aria-hidden="true"><svg id="garden-svg"></svg></div>
     <section class="sc sc-g gutter" data-in="7.8" data-out="9.45" data-scene="4" aria-labelledby="s5t">
       <div class="wrap">
         <div><p class="eyebrow">만든 것</p><h2 class="big" id="s5t">지금까지 뻗은 가지</h2></div>
@@ -631,6 +637,59 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     unitPx = $('unit').getBoundingClientRect().height || window.innerHeight;
     $('track').style.height = Math.round((P_END + 1) * unitPx) + 'px';
     trackTop = $('track').getBoundingClientRect().top + window.scrollY;
+    buildGarden();
+  }
+
+  /* ---------- Garden: leaves, grass and blooms made of the brand shape (TL + BR rounded, TR + BL sharp) ---------- */
+  var gardenKey = '';
+  function rng(seed) { return function () { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+  function leaf(w, h, r) { /* centred rectangle, top-left and bottom-right rounded: the brand's leaf */
+    var x = -w / 2, y = -h / 2; r = Math.min(r, w, h);
+    return 'M' + (x + r).toFixed(1) + ' ' + y.toFixed(1) + 'H' + (x + w).toFixed(1) + 'V' + (y + h - r).toFixed(1) +
+      'A' + r.toFixed(1) + ' ' + r.toFixed(1) + ' 0 0 1 ' + (x + w - r).toFixed(1) + ' ' + (y + h).toFixed(1) +
+      'H' + x.toFixed(1) + 'V' + (y + r).toFixed(1) + 'A' + r.toFixed(1) + ' ' + r.toFixed(1) + ' 0 0 1 ' + (x + r).toFixed(1) + ' ' + y.toFixed(1) + 'Z';
+  }
+  function buildGarden() {
+    var W = window.innerWidth, H = window.innerHeight, key = W + 'x' + H;
+    if (key === gardenKey) return; gardenKey = key;
+    var ph = W < 700, k = ph ? 0.62 : 1, rnd = rng(20261126);
+    var box = document.querySelector('[data-scene="4"] .wrap').getBoundingClientRect(), pad = ph ? 10 : 24;
+    var cx0 = box.left - pad, cx1 = box.right + pad, cy0 = box.top - pad, cy1 = box.bottom + pad;
+    function clear(x, y, r) { return x + r < cx0 || x - r > cx1 || y + r < cy0 || y - r > cy1; }
+    function edge(x, y) { return Math.min(x, W - x, y, H - y) / Math.min(W, H); }
+    var L = [[], [], []]; /* back, mid, front */
+    var FILL = ['rgba(15,17,16,0.16)', '#2E7D5B', '#0F1110'];
+    var ROT = [0, 45, 90, -45];
+    function put(layer, d, x, y, rot) { L[layer].push('<path d="' + d + '" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + rot + ')"/>'); }
+    /* leaves, dense at the edges and thinning toward the middle */
+    var N = ph ? 260 : 520;
+    for (var i = 0; i < N; i++) {
+      var layer = i % 3, x = rnd() * W, y = rnd() * H, s = (14 + rnd() * (layer === 2 ? 46 : 70)) * k;
+      if (rnd() > Math.exp(-edge(x, y) / [0.2, 0.13, 0.08][layer])) continue;
+      if (!clear(x, y, s * 0.75)) continue;
+      put(layer, leaf(s, s, s * 0.48), x, y, ROT[Math.floor(rnd() * 4)]);
+    }
+    /* grass along the bottom, hanging leaves along the top */
+    var step = (ph ? 9 : 12);
+    for (var gx = -10; gx < W + 10; gx += step * (0.6 + rnd() * 0.8)) {
+      var gl = Math.floor(rnd() * 3), gw = (5 + rnd() * 4) * k, gh = (40 + rnd() * (gl === 2 ? 90 : 150)) * k;
+      var tilt = gh < 70 * k && rnd() < 0.3 ? (rnd() < 0.5 ? 45 : -45) : 0; /* only short blades lean */
+      if (clear(gx, H - gh / 2, gw)) put(gl, leaf(gw, gh, gw * 0.95), gx, H - gh / 2 + 6, tilt);
+      if (rnd() < 0.22) { var th = (12 + rnd() * 26) * k; if (clear(gx, th / 2, gw)) put(gl, leaf(gw, th, gw * 0.95), gx, th / 2 - 4, 0); }
+    }
+    /* blooms: four leaves around a square, the bloom's centre is the green result */
+    var B = ph ? 9 : 16, blooms = [];
+    for (var b = 0; b < B * 6 && blooms.length < B; b++) {
+      var bx = rnd() * W, by = rnd() * H, ps = (9 + rnd() * 8) * k;
+      if (edge(bx, by) > 0.16 || !clear(bx, by, ps * 2.2)) continue;
+      var white = rnd() < 0.6, pf = white ? '#FFFFFF' : '#0F1110', o = ps * 0.78, pl = leaf(ps, ps * 1.6, ps * 0.48);
+      blooms.push('<g transform="translate(' + bx.toFixed(1) + ' ' + by.toFixed(1) + ')" fill="' + pf + '">' +
+        '<path d="' + pl + '" transform="translate(0 ' + (-o) + ')"/><path d="' + pl + '" transform="translate(0 ' + o + ')"/>' +
+        '<path d="' + pl + '" transform="translate(' + (-o) + ' 0) rotate(90)"/><path d="' + pl + '" transform="translate(' + o + ' 0) rotate(90)"/>' +
+        '<path d="' + leaf(ps * 0.9, ps * 0.9, ps * 0.15) + '" fill="' + (white ? '#4FB88A' : '#FFFFFF') + '"/></g>');
+    }
+    $('garden-svg').setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    $('garden-svg').innerHTML = L.map(function (paths, i) { return '<g class="gl" fill="' + FILL[i] + '">' + paths.join('') + (i === 2 ? blooms.join('') : '') + '</g>'; }).join('');
   }
   function progress() { return Math.max(0, (window.scrollY - trackTop) / unitPx); }
 
@@ -664,6 +723,17 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     /* stations along the branch */
     var gi = clamp(Math.floor(((p - 4.0) / 2.1) * 3), 0, 2);
     Array.prototype.forEach.call($('stations').children, function (li, i) { li.classList.toggle('on', i === gi); });
+
+    /* garden: grows in from the edges as we enter the green, layers drift apart for depth, recedes before contact */
+    var gIn = clamp((p - 7.75) / 0.45, 0, 1), gOut = clamp((9.55 - p) / 0.3, 0, 1), gO = REDUCE ? (p >= 7.8 && p < 9.45 ? 1 : 0) : Math.min(gIn, gOut);
+    var gd = $('garden'); gd.style.opacity = gO.toFixed(3); gd.style.visibility = gO > 0.01 ? 'visible' : 'hidden';
+    if (!REDUCE && gO > 0.01) {
+      var e = 1 - Math.pow(1 - gIn, 3), drift = clamp(p - 8.6, -0.8, 0.9);
+      Array.prototype.forEach.call(gd.querySelectorAll('.gl'), function (g, i) {
+        var sc = 1 + (1 - e) * (0.05 + i * 0.07);
+        g.style.transform = 'translateY(' + (drift * (i + 1) * -10).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')';
+      });
+    }
 
     /* screen layer */
     var FW = 0.25, scene = p < 1 ? 0 : curScene, best = 0;
