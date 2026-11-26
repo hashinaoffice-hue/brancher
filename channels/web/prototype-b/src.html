@@ -27,6 +27,10 @@
   --on-green-2: #1B3B2C;
   --r: 14px;
   --r-s: 6px;
+  /* Spacing: one scale, used by rule (see prototype-b/README.md).
+     eyebrow→title 2 · label→control 2 · heading→body 4 · item↔item 5 · body→items/data 6 · column↔column 7 */
+  --sp1: 4px; --sp2: 8px; --sp3: 12px; --sp4: 16px; --sp5: 24px; --sp6: 32px; --sp7: 48px;
+  --ctl: 52px; /* one height for every control row: mail box, inputs, send */
   --sq: 16.4%;
   --gut: 16px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
@@ -75,38 +79,41 @@ p, ol, ul, dl, dd { margin: 0; }
 .sc.live { pointer-events: auto; }
 .eyebrow { font-weight: 600; font-size: clamp(15px, 1.25vw, 17px); letter-spacing: -0.01em; color: var(--muted); }
 .big { font-weight: 700; letter-spacing: -0.02em; line-height: 1.22; }
+.hg { display: grid; gap: var(--sp2); }          /* heading group: eyebrow + title */
+.sc .data { margin-top: var(--sp4); }          /* body → data/items = sp4 (section gap) + sp4 = sp6 */
 
 /* S0 sign */
-.sc-0 { left: 0; right: 0; top: 60%; text-align: center; display: grid; gap: 12px; justify-items: center; }
+.sc-0 { left: 0; right: 0; top: 60%; text-align: center; display: grid; gap: var(--sp6); justify-items: center; }
+.sc-0 .hg, .sc-4 .hg { justify-items: center; }
 .sc-0 .kicker { font-weight: 600; color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 .sc-0 h1 { font-size: clamp(22px, 2.8vw, 40px); font-weight: 600; letter-spacing: -0.01em; }
-.hint { margin-top: 28px; display: grid; justify-items: center; gap: 8px; font-size: 13px; color: var(--dim); font-weight: 600; }
+.hint { display: grid; justify-items: center; gap: var(--sp2); font-size: 13px; color: var(--dim); font-weight: 600; }
 .hint i { width: 2px; height: 36px; background: var(--line); position: relative; overflow: hidden; }
 .hint i::after { content: ""; position: absolute; inset: 0; background: var(--fg); transform-origin: 50% 0; animation: hint 1.6s var(--ease) infinite; }
 @keyframes hint { 0% { transform: scaleY(0); } 60%, 100% { transform: scaleY(1); opacity: 0; } }
 
 /* S2 stem: text to the right of the white wall */
-.sc-2 { left: 30%; right: max(var(--gut), env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); display: grid; gap: 18px; max-width: 660px; }
+.sc-2 { left: 30%; right: max(var(--gut), env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); display: grid; gap: var(--sp4); max-width: 660px; }
 .sc-2 .big { font-size: clamp(26px, 4.2vw, 56px); }
 .sc-2 p.sub { color: var(--muted); font-size: clamp(16px, 1.5vw, 19px); max-width: 30em; }
-.facts-row { display: flex; gap: 10px 28px; flex-wrap: wrap; padding-top: 8px; }
-.facts-row div { display: grid; }
+.facts-row { display: flex; gap: var(--sp4) var(--sp6); flex-wrap: wrap; }
+.facts-row div { display: grid; gap: var(--sp1); }
 .facts-row small { font-size: 14px; font-weight: 600; color: var(--muted); }
 .facts-row b { font-size: clamp(20px, 2vw, 26px); font-weight: 700; }
 @media (max-width: 699px) { .sc-2 { left: 34%; } }
-.dict .pron { font-weight: 600; font-size: max(15px, 0.5em); color: var(--muted); letter-spacing: 0; margin-left: 6px; }
-.senses { padding-left: 1.4em; display: grid; gap: 8px; color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
+.dict .pron { font-weight: 600; font-size: max(15px, 0.5em); color: var(--muted); letter-spacing: 0; margin-left: var(--sp2); }
+.senses { padding-left: 1.4em; display: grid; gap: var(--sp2); color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 .senses li::marker { color: var(--fg); font-weight: 600; }
-.dict .motto { color: var(--fg); font-weight: 700; font-size: clamp(18px, 1.8vw, 24px); letter-spacing: -0.01em; text-wrap: balance; margin-top: 6px; }
+.dict .motto { color: var(--fg); font-weight: 700; font-size: clamp(18px, 1.8vw, 24px); letter-spacing: -0.01em; text-wrap: balance; }
 
 /* S3 branch: one verb, below-right of the diagonal */
-.sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); top: 15%; width: min(480px, 58%); display: grid; gap: 12px; }
+.sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); top: 15%; width: min(480px, 58%); display: grid; gap: var(--sp4); }
 .sc-3 .big { font-size: clamp(24px, 3vw, 40px); }
 .sc-3 .sub { color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 @media (max-width: 699px) { .sc-3 { left: 36%; width: auto; top: auto; bottom: 7%; } }
 
 /* S4 gap */
-.sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; display: grid; gap: 10px; justify-items: center; }
+.sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; display: grid; gap: var(--sp4); justify-items: center; }
 .sc-4 .big { font-size: clamp(28px, 4vw, 56px); }
 .sc-4 .sub { color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
 .br-m { display: none; }
@@ -119,17 +126,18 @@ p, ol, ul, dl, dd { margin: 0; }
 .garden { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
 .garden svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .garden .gb { will-change: opacity; }
-.sc-g .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
+.sc-g .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: var(--sp6); }
+.sc-g .txt { display: grid; gap: var(--sp4); }
 .sc-g .eyebrow { color: var(--on-green); }
 .sc-g .big { font-size: clamp(30px, 4.6vw, 60px); }
-.sc-g .lead { color: var(--on-green); font-size: clamp(16px, 1.5vw, 19px); margin-top: 10px; }
+.sc-g .lead { color: var(--on-green); font-size: clamp(16px, 1.5vw, 19px); }
 .sc-g :focus-visible { outline-color: var(--on-green); }
-.cards { list-style: none; padding: 0; display: grid; gap: 14px; }
-@media (min-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
-.card { background: var(--bg); color: var(--fg); padding: 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.cards { list-style: none; padding: 0; display: grid; gap: var(--sp5); }
+@media (min-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { background: var(--bg); color: var(--fg); padding: var(--sp5); display: grid; gap: var(--sp2); align-content: start; min-width: 0; }
 .card.slot { background: transparent; border: 1.5px dashed rgba(15, 17, 16, 0.42); color: var(--on-green); }
 .card.slot .b-desc { color: var(--on-green); }
-.b-head { display: flex; align-items: center; gap: 10px; }
+.b-head { display: flex; align-items: center; gap: var(--sp2); }
 .sq { width: 14px; height: 14px; border-radius: var(--sq) 0 var(--sq) 0; flex: none; display: inline-block; }
 .sq.open { border: 2px solid var(--dim); }
 .sq.slot { border: 1.5px dashed rgba(15, 17, 16, 0.6); }
@@ -140,43 +148,46 @@ p, ol, ul, dl, dd { margin: 0; }
 .b-name { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
 .b-desc { color: var(--muted); }
 .b-meta { color: var(--dim); font-size: 14px; }
-.b-actions { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 8px; }
-@media (max-width: 699px) { .card { padding: 18px; } .card.slot .b-desc { display: none; } }
+.b-actions { display: flex; gap: var(--sp2); flex-wrap: wrap; padding-top: var(--sp2); }
+@media (max-width: 699px) { .card { padding: var(--sp4); } .card.slot .b-desc { display: none; } }
 
-.contact { display: grid; gap: 24px; }
-@media (min-width: 900px) { .contact { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; } }
-.contact-side { display: grid; gap: 20px; }
+.sc-g .contact { display: grid; gap: var(--sp5); } /* mail block → first field = item ↔ item */
+@media (min-width: 900px) { .sc-g .contact { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--sp7); align-items: start; } }
+.contact-side { display: grid; gap: var(--sp4); }
 .contact-side .sub { color: var(--on-green); font-size: 17px; }
-.mail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: rgba(15, 17, 16, 0.08); color: var(--on-green); border: 2px solid rgba(15, 17, 16, 0.28); padding: 12px 14px; }
+.mail { display: flex; align-items: center; gap: var(--sp3); background: rgba(15, 17, 16, 0.08); color: var(--on-green); border: 2px solid rgba(15, 17, 16, 0.28); height: var(--ctl); padding: 0 var(--sp2) 0 var(--sp4); flex-wrap: nowrap; }
 .mail .btn-line { color: var(--on-green); border-color: rgba(15, 17, 16, 0.45); }
 .mail .btn-line:not(:disabled):hover { border-color: var(--on-green); }
 .mail-addr { font-weight: 600; font-size: 17px; user-select: all; min-width: 0; overflow-wrap: anywhere; }
-.mail .btn-line { margin-left: auto; padding: 6px 14px; font-size: 14px; }
-form { display: grid; gap: 12px; }
-.field { display: grid; gap: 6px; }
-.field label { font-weight: 600; font-size: 14px; color: var(--on-green); }
-.field input, .field textarea { background: rgba(15, 17, 16, 0.08); color: var(--on-green); border: 2px solid rgba(15, 17, 16, 0.28); padding: 11px 14px; width: 100%; border-radius: var(--r) 0 var(--r) 0; }
-.field textarea { min-height: 120px; resize: vertical; }
+.mail .btn-line { margin-left: auto; height: calc(var(--ctl) - 4px - 2 * var(--sp2)); padding: 0 var(--sp3); font-size: 14px; display: inline-flex; align-items: center; }
+form { display: grid; gap: var(--sp5); }
+.field { display: grid; gap: var(--sp2); }
+.field label, .field .flabel { font-weight: 600; font-size: 14px; color: var(--on-green); }
+.field input, .field textarea { background: rgba(15, 17, 16, 0.08); color: var(--on-green); border: 2px solid rgba(15, 17, 16, 0.28); height: var(--ctl); padding: 0 var(--sp4); width: 100%; border-radius: var(--r) 0 var(--r) 0; }
+.field textarea { height: auto; min-height: 120px; padding: var(--sp3) var(--sp4); resize: vertical; }
 .field input:focus, .field textarea:focus { border-color: var(--on-green); outline: none; }
 .field input::placeholder, .field textarea::placeholder { color: rgba(15, 17, 16, 0.5); }
-.form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 48px; }
+.form-foot { display: flex; align-items: center; gap: var(--sp4); flex-wrap: wrap; min-height: var(--ctl); }
+.form-foot .btn-ink:not(.shipping) { height: var(--ctl); padding: 0 var(--sp5); }
 .form-foot .note { color: var(--on-green); }
 .btn-ink { background: var(--bg); color: var(--fg); border: 0; padding: 12px 22px; font-weight: 700; }
 .btn-ship { transition: width 320ms var(--ease), height 320ms var(--ease), padding 320ms var(--ease), color 160ms, border-radius 320ms var(--ease); white-space: nowrap; overflow: hidden; }
 .btn-ship.shipping { width: 14px !important; height: 14px; padding: 0; color: transparent; border-radius: var(--sq) 0 var(--sq) 0; pointer-events: none; }
 .err { color: var(--on-green); font-weight: 600; font-size: 14px; }
-.sent { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); color: var(--fg); padding: 18px 20px; }
+.sent { display: flex; gap: var(--sp3); align-items: flex-start; background: var(--bg); color: var(--fg); padding: var(--sp4) var(--sp5); }
 .sent .sq { margin-top: 6px; }
 .sent div { display: grid; gap: 2px; }
 .sent strong { font-weight: 700; font-size: 19px; }
-@media (max-width: 699px) { .contact-side .sub { display: none; } .field textarea { min-height: 96px; } }
+@media (max-width: 699px) { .field textarea { min-height: 96px; } }
+@media (max-width: 699px) and (max-height: 720px) { .field textarea { min-height: 64px; } }
 
 /* S7 pull back */
-.sc-7 { left: 0; right: 0; bottom: 7%; text-align: center; display: grid; gap: 18px; justify-items: center; }
+.sc-7 { left: 0; right: 0; bottom: 7%; text-align: center; display: grid; gap: var(--sp4); justify-items: center; }
+.sc-7 .hg { justify-items: center; }
 .sc-7 .big { font-size: clamp(22px, 2.8vw, 36px); }
 .sc-7 .sign { color: var(--muted); font-weight: 600; }
-.sc-7 .parts { color: var(--dim); font-size: 14px; font-weight: 600; margin-top: -8px; }
-.foot-meta { display: flex; gap: 6px 18px; flex-wrap: wrap; justify-content: center; color: var(--dim); font-size: 14px; }
+.sc-7 .parts { color: var(--dim); font-size: 14px; font-weight: 600; }
+.foot-meta { display: flex; gap: var(--sp2) var(--sp5); flex-wrap: wrap; justify-content: center; color: var(--dim); font-size: 14px; }
 .foot-meta a { color: var(--muted); }
 
 /* Buttons shared */
@@ -357,7 +368,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
 <div class="proto">
   <div class="proto-in gutter">
-    <span class="proto-tag">시안 v4.14 · B안</span>
+    <span class="proto-tag">시안 v4.15 · B안</span>
     <div class="seg" role="group" aria-label="화면">
       <button type="button" id="v-public" data-view="public">공개 페이지</button>
       <button type="button" id="v-admin" data-view="admin">관리자 모드</button>
@@ -397,14 +408,14 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
   <main class="ov" id="ov">
     <section class="sc sc-0 gutter" data-in="-1" data-out="0.8" data-scene="0" aria-label="브랜처">
-      <p class="kicker">가지를 뻗는 사람</p>
-      <h1 class="big">편리하고 즐거운 서비스를 만듭니다.</h1>
+      <div class="hg"><p class="kicker">가지를 뻗는 사람</p>
+      <h1 class="big">편리하고 즐거운 서비스를 만듭니다.</h1></div>
       <div class="hint"><i></i>스크롤</div>
     </section>
 
     <section class="sc sc-2 dict" data-in="1.7" data-out="2.55" data-scene="1" data-label="이름" aria-labelledby="s2n">
-      <p class="eyebrow">이름</p>
-      <h2 class="big" id="s2n">brancher <span class="pron">[브랜처]</span></h2>
+      <div class="hg"><p class="eyebrow">이름</p>
+      <h2 class="big" id="s2n">brancher <span class="pron">[브랜처]</span></h2></div>
       <ol class="senses">
         <li>가지를 뻗는 사람. branch(가지) + -er(사람).</li>
         <li>개발자의 말로, 새 시도를 위해 '브랜치'를 따는 사람.</li>
@@ -413,10 +424,10 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     </section>
 
     <section class="sc sc-2" data-in="2.55" data-out="3.35" data-scene="1" aria-labelledby="s2t">
-      <p class="eyebrow">줄기</p>
-      <h2 class="big" id="s2t">모든 가지는<br>이 줄기 하나에서 나옵니다.</h2>
+      <div class="hg"><p class="eyebrow">줄기</p>
+      <h2 class="big" id="s2t">모든 가지는<br>이 줄기 하나에서 나옵니다.</h2></div>
       <p class="sub">흔들리지 않는 기반. 이 줄기는 한 사람이 지킵니다.</p>
-      <div class="facts-row tnum">
+      <div class="facts-row data tnum">
         <div><small>운영</small><b>1인</b></div>
         <div><small>시작</small><b>2026.10</b></div>
         <div><small id="fact-branches">가지 · 만드는 중</small><b>1</b></div>
@@ -424,21 +435,21 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     </section>
 
     <section class="sc sc-3" data-in="3.55" data-out="4.8" data-scene="2" aria-labelledby="s3t">
-      <p class="eyebrow">뻗는다 · Branch out</p>
-      <h2 class="big" id="s3t">가지 하나가,<br>새로운 시도 하나입니다.</h2>
+      <div class="hg"><p class="eyebrow">뻗는다 · Branch out</p>
+      <h2 class="big" id="s3t">가지 하나가,<br>새로운 시도 하나입니다.</h2></div>
       <p class="sub">분야를 가리지 않고, 새 아이디어로 뻗습니다.</p>
     </section>
 
     <section class="sc sc-4 gutter" id="sc4" data-in="5.2" data-out="6.35" data-scene="3" aria-labelledby="s4t">
-      <p class="eyebrow">내놓는다 · Ship with care</p>
-      <h2 class="big" id="s4t">내놓는 순간이 <br class="br-m">마침표입니다.</h2>
+      <div class="hg"><p class="eyebrow">내놓는다 · Ship with care</p>
+      <h2 class="big" id="s4t">내놓는 순간이 <br class="br-m">마침표입니다.</h2></div>
       <p class="sub">가지 끝의 그린 스퀘어는 <br class="br-m">오래 다듬어 내놓은 결과물입니다.</p>
     </section>
 
     <div class="garden" id="garden" aria-hidden="true"><svg id="garden-svg"></svg></div>
     <section class="sc sc-g gutter" data-in="7.2" data-out="8.55" data-scene="4" aria-labelledby="s5t">
       <div class="wrap">
-        <div><p class="eyebrow">키운다</p><h2 class="big" id="s5t">브랜처의 정원</h2><p class="lead">반응이 온 가지만 키웁니다. 필요한 것을 골라, 일상 곁에 두세요.</p></div>
+        <div class="txt"><div class="hg"><p class="eyebrow">키운다</p><h2 class="big" id="s5t">브랜처의 정원</h2></div><p class="lead">반응이 온 가지만 키웁니다. 필요한 것을 골라, 일상 곁에 두세요.</p></div>
         <ol class="cards" id="cards"></ol>
       </div>
     </section>
@@ -446,17 +457,20 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     <section class="sc sc-g gutter" data-in="8.55" data-out="9.7" data-scene="5" aria-labelledby="s6t">
       <div class="wrap contact">
         <div class="contact-side">
-          <div><p class="eyebrow">문의</p><h2 class="big" id="s6t">메일로 연락 주세요.</h2></div>
-          <p class="sub">양식으로 보내셔도 됩니다.</p>
-          <div class="mail diag">
-            <span class="mail-addr" id="mail-addr">brancher.lab@gmail.com</span>
-            <button type="button" class="btn-line diag" id="copy-mail">복사</button>
+          <div class="hg"><p class="eyebrow">문의</p><h2 class="big" id="s6t">만드는 사람이 직접 답합니다.</h2></div>
+          <p class="sub">협업 제안도, 작은 아이디어도 좋습니다. 2일 안에 답장합니다.</p>
+          <div class="field data">
+            <span class="flabel" id="mail-l">메일</span>
+            <div class="mail diag" role="group" aria-labelledby="mail-l">
+              <span class="mail-addr" id="mail-addr">brancher.lab@gmail.com</span>
+              <button type="button" class="btn-line diag" id="copy-mail">복사</button>
+            </div>
           </div>
         </div>
         <div>
           <form id="contact-form" novalidate>
             <div class="field"><label for="f-mail">회신 받을 메일</label><input id="f-mail" type="email" autocomplete="email" placeholder="name@example.com" required></div>
-            <div class="field"><label for="f-body">내용</label><textarea id="f-body" required></textarea></div>
+            <div class="field"><label for="f-body">내용</label><textarea id="f-body" placeholder="예: 이런 서비스가 있으면 좋겠습니다." required></textarea></div>
             <div class="form-foot">
               <button type="submit" class="btn-ink btn-ship diag" id="send">보내기</button>
               <span class="note" id="privacy">회신에만 씁니다. 처리 후 1년 뒤 삭제합니다.</span>
@@ -465,17 +479,17 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
           </form>
           <div class="sent diag" id="sent" hidden>
             <i class="sq done land"></i>
-            <div><strong>받았습니다. 메일로 답장합니다.</strong><span class="note">시안이라 실제로 보내지지 않습니다.</span></div>
+            <div><strong>받았습니다. 2일 안에 메일로 답장합니다.</strong><span class="note">시안이라 실제로 보내지지 않습니다.</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="sc sc-7 gutter" data-in="11.15" data-out="999" data-scene="6" data-at="9.72" aria-label="brancher">
-      <p class="big">지나온 길이 brancher입니다.</p>
-      <p class="parts">줄기 · 가지 · 결과물</p>
+      <div class="hg"><p class="big">지나온 길이 brancher입니다.</p>
+      <p class="parts">줄기 · 가지 · 결과물</p></div>
       <p class="sign">Branch out. Build ventures.</p>
-      <div class="foot-meta">
+      <div class="foot-meta data">
         <a href="https://www.instagram.com/brancher.dev/" target="_blank" rel="noopener">@brancher.dev</a>
         <span>brancher.lab@gmail.com</span>
         <span>© brancher</span>
