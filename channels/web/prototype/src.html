@@ -1,0 +1,1022 @@
+<title>brancher.kr 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<script>
+(function () {
+  var seen = false;
+  try { seen = sessionStorage.getItem('brancher-sig4') === '1'; } catch (e) {}
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!seen && !reduce) document.documentElement.classList.add('sig');
+  try { sessionStorage.setItem('brancher-sig4', '1'); } catch (e) {}
+})();
+</script>
+<style>
+/* FONTS */
+/* Concept: the page is one giant brancher symbol. A fixed camera flies over the real logo paths as you scroll:
+   wordmark → into the b's stem (it is the symbol's stem ×1.97) → up the stem → out along the 45° branch →
+   the gap → inside the green square → pull back to the whole mark. Text lives in a screen-space layer. */
+:root {
+  --bg: #0F1110;
+  --surface: #161917;
+  --line: #2A2F2C;
+  --fg: #FFFFFF;
+  --muted: #A3ABA7;
+  --dim: #6F7773;
+  --bar: #C4CBC7;
+  --green: #4FB88A;
+  --on-green: #0F1110;
+  --on-green-2: #1B3B2C;
+  --r: 10px;
+  --sq: 16.4%;
+  --gut: 16px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t1: 150ms; --t2: 400ms;
+  --font: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  color-scheme: dark;
+}
+@media (min-width: 900px) { :root { --gut: 48px; } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.6; word-break: keep-all; overflow-wrap: break-word; }
+.gutter { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+.tnum { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+.diag { border-radius: var(--r) 0 var(--r) 0; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p, ol, ul, dl, dd { margin: 0; }
+.note { color: var(--dim); font-size: 14px; }
+.label { font-weight: 600; font-size: 14px; color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Prototype bar — not part of the site */
+.proto { position: relative; z-index: 50; background: var(--surface); border-bottom: 1px solid var(--line); }
+.proto-in { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-block: 10px; font-size: 13px; }
+.proto-tag { font-weight: 600; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px 0 8px 0; overflow: hidden; }
+.seg button { background: transparent; border: 0; padding: 6px 12px; color: var(--muted); font-weight: 600; font-size: 13px; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.proto-gap { flex: 1 1 auto; }
+
+/* ================= Stage: camera over the real logo ================= */
+.stage { position: fixed; inset: 0; z-index: 0; background: var(--bg); }
+.stage svg { width: 100%; height: 100%; display: block; }
+#sym-sq { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 300ms var(--ease), opacity 90ms linear; }
+.scroll-track { position: relative; z-index: 1; pointer-events: none; }
+.unit { position: absolute; top: 0; height: 100vh; height: 100svh; width: 1px; visibility: hidden; }
+
+/* ================= Screen layer: one block per scene ================= */
+.ov { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+.sc { position: absolute; visibility: hidden; opacity: 0; }
+.sc.live { pointer-events: auto; }
+.eyebrow { font-weight: 600; font-size: 14px; letter-spacing: -0.01em; color: var(--muted); }
+.big { font-weight: 700; letter-spacing: -0.02em; line-height: 1.22; }
+
+/* S0 sign */
+.sc-0 { left: 0; right: 0; top: 60%; text-align: center; display: grid; gap: 12px; justify-items: center; }
+.sc-0 .kicker { font-weight: 600; color: var(--muted); font-size: clamp(15px, 1.4vw, 18px); }
+.sc-0 h1 { font-size: clamp(30px, 5vw, 64px); }
+.hint { margin-top: 28px; display: grid; justify-items: center; gap: 8px; font-size: 13px; color: var(--dim); font-weight: 600; }
+.hint i { width: 2px; height: 36px; background: var(--line); position: relative; overflow: hidden; }
+.hint i::after { content: ""; position: absolute; inset: 0; background: var(--fg); transform-origin: 50% 0; animation: hint 1.6s var(--ease) infinite; }
+@keyframes hint { 0% { transform: scaleY(0); } 60%, 100% { transform: scaleY(1); opacity: 0; } }
+
+/* S2 stem: text to the right of the white wall */
+.sc-2 { left: 30%; right: max(var(--gut), env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); display: grid; gap: 18px; max-width: 660px; }
+.sc-2 .big { font-size: clamp(26px, 4.2vw, 56px); }
+.sc-2 p.sub { color: var(--muted); font-size: clamp(16px, 1.5vw, 19px); max-width: 30em; }
+.facts-row { display: flex; gap: 10px 28px; flex-wrap: wrap; padding-top: 8px; }
+.facts-row div { display: grid; }
+.facts-row small { font-size: 12px; font-weight: 600; color: var(--dim); }
+.facts-row b { font-size: clamp(20px, 2vw, 26px); font-weight: 700; }
+@media (max-width: 699px) { .sc-2 { left: 44%; } }
+
+/* S3 branch: stations below-right of the diagonal */
+.sc-3 { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: 9%; width: min(460px, 60%); display: grid; gap: 16px; }
+.sc-3 .title { font-size: clamp(17px, 1.6vw, 21px); font-weight: 700; color: var(--muted); }
+.stations { list-style: none; padding: 0; display: grid; gap: 14px; }
+.stations li { display: grid; gap: 2px; color: var(--dim); transition: color var(--t1); }
+.stations strong { font-size: clamp(24px, 2.8vw, 36px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.stations strong span { font-size: 14px; font-weight: 600; margin-left: 8px; }
+.stations p { font-size: 15px; }
+.stations li.on { color: var(--fg); }
+.stations li.on p { color: var(--muted); }
+@media (max-width: 699px) { .sc-3 { left: 36%; width: auto; bottom: 7%; } .stations p { display: none; } }
+
+/* S4 gap */
+.sc-4 { left: 0; right: 0; bottom: var(--s4b, 62%); text-align: center; }
+.sc-4 .big { font-size: clamp(28px, 4vw, 56px); }
+.br-m { display: none; }
+@media (max-width: 699px) { .br-m { display: inline; } }
+
+/* S5–S6 inside the green: black type */
+.sc-g { left: 0; right: 0; top: 50%; transform: translateY(-50%); color: var(--on-green); }
+.sc-g .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
+.sc-g .eyebrow { color: var(--on-green-2); }
+.sc-g .big { font-size: clamp(30px, 4.6vw, 60px); }
+.sc-g :focus-visible { outline-color: var(--on-green); }
+.cards { list-style: none; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
+.card { background: var(--bg); color: var(--fg); padding: 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card.slot { background: transparent; border: 2px dashed var(--on-green); color: var(--on-green); }
+.card.slot .b-desc { color: var(--on-green-2); }
+.b-head { display: flex; align-items: center; gap: 10px; }
+.sq { width: 14px; height: 14px; border-radius: var(--sq) 0 var(--sq) 0; flex: none; display: inline-block; }
+.sq.open { border: 2px solid var(--dim); }
+.sq.slot { border: 2px dashed var(--on-green); }
+.sq.done { background: var(--green); }
+.b-no { font-weight: 600; letter-spacing: -0.01em; }
+.chip { font-size: 13px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); padding: 1px 10px; border-radius: 6px 0 6px 0; white-space: nowrap; line-height: 1.6; }
+.chip.done { color: var(--green); border-color: var(--green); }
+.b-name { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+.b-desc { color: var(--muted); }
+.b-meta { color: var(--dim); font-size: 14px; }
+.b-actions { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 8px; }
+@media (max-width: 699px) { .card { padding: 18px; } .card.slot .b-desc { display: none; } }
+
+.contact { display: grid; gap: 24px; }
+@media (min-width: 900px) { .contact { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; } }
+.contact-side { display: grid; gap: 20px; }
+.contact-side .sub { color: var(--on-green-2); font-size: 17px; }
+.mail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--bg); color: var(--fg); padding: 14px 16px; }
+.mail-addr { font-weight: 600; font-size: 17px; user-select: all; min-width: 0; overflow-wrap: anywhere; }
+.mail .btn-line { margin-left: auto; padding: 6px 14px; font-size: 14px; }
+form { display: grid; gap: 12px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 14px; color: var(--on-green-2); }
+.field input, .field textarea { background: var(--bg); color: var(--fg); border: 2px solid var(--bg); padding: 11px 14px; width: 100%; border-radius: var(--r) 0 var(--r) 0; }
+.field textarea { min-height: 120px; resize: vertical; }
+.field input:focus, .field textarea:focus { border-color: var(--fg); outline: none; }
+.form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 48px; }
+.form-foot .note { color: var(--on-green-2); }
+.btn-ink { background: var(--bg); color: var(--fg); border: 0; padding: 12px 22px; font-weight: 700; }
+.btn-ship { transition: width 320ms var(--ease), height 320ms var(--ease), padding 320ms var(--ease), color 160ms, border-radius 320ms var(--ease); white-space: nowrap; overflow: hidden; }
+.btn-ship.shipping { width: 14px !important; height: 14px; padding: 0; color: transparent; border-radius: var(--sq) 0 var(--sq) 0; pointer-events: none; }
+.err { color: var(--on-green); font-weight: 600; font-size: 14px; }
+.sent { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); color: var(--fg); padding: 18px 20px; }
+.sent .sq { margin-top: 6px; }
+.sent div { display: grid; gap: 2px; }
+.sent strong { font-weight: 700; font-size: 19px; }
+@media (max-width: 699px) { .contact-side .sub { display: none; } .field textarea { min-height: 96px; } }
+
+/* S7 pull back */
+.sc-7 { left: 0; right: 0; bottom: 7%; text-align: center; display: grid; gap: 18px; justify-items: center; }
+.sc-7 .big { font-size: clamp(22px, 2.8vw, 36px); }
+.sc-7 .sign { color: var(--muted); font-weight: 600; }
+.foot-meta { display: flex; gap: 6px 18px; flex-wrap: wrap; justify-content: center; color: var(--dim); font-size: 14px; }
+.foot-meta a { color: var(--muted); }
+
+/* Buttons shared */
+.btn-go { background: var(--green); color: var(--on-green); border: 0; padding: 10px 18px; font-weight: 700; }
+.btn-white { background: var(--fg); color: var(--bg); border: 0; padding: 12px 20px; font-weight: 700; }
+.btn-line { background: transparent; color: var(--fg); border: 1px solid var(--line); padding: 9px 16px; font-weight: 600; }
+.btn-line:disabled { color: var(--dim); cursor: not-allowed; }
+.btn-go, .btn-white, .btn-line, .btn-ink { transition: border-color var(--t1), opacity var(--t1); }
+.btn-go:hover, .btn-white:hover, .btn-ink:hover { opacity: .88; }
+.btn-line:not(:disabled):hover { border-color: var(--fg); }
+.btn-sm { padding: 8px 14px; font-size: 15px; }
+
+/* ================= Chrome: scene label + minimap ================= */
+.chrome { position: fixed; z-index: 40; color: var(--muted); transition: color var(--t1); }
+.scene-label { left: max(var(--gut), env(safe-area-inset-left, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); font-size: 13px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; background: var(--bg); padding: 6px 12px; border-radius: 8px 0 8px 0; }
+.scene-label b { color: var(--fg); font-weight: 600; transition: color var(--t1); }
+.mini { right: max(var(--gut), env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: grid; justify-items: end; gap: 10px; }
+.mini-btn { background: var(--bg); border: 1px solid var(--line); border-radius: 12px 0 12px 0; padding: 8px 10px; display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; font-weight: 600; transition: border-color var(--t1), color var(--t1); }
+.mini-btn:hover { border-color: var(--fg); }
+.mini-btn svg { width: 36px; height: 36px; display: block; }
+.mini-menu { list-style: none; padding: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px 0 12px 0; display: grid; min-width: 150px; }
+.mini-menu button { width: 100%; text-align: left; background: transparent; border: 0; padding: 8px 10px; color: var(--muted); font-weight: 600; border-radius: 6px 0 6px 0; }
+.mini-menu button:hover { color: var(--fg); background: var(--surface); }
+.mini-menu button[aria-current="true"] { color: var(--fg); }
+@media (max-width: 699px) {
+  .mini { top: calc(12px + env(safe-area-inset-top, 0px)); bottom: auto; }
+  .mini-btn span { display: none; }
+  .mini-btn svg { width: 30px; height: 30px; }
+}
+
+/* Sheet (branch detail, admin confirm) */
+dialog.sheet { border: 1px solid var(--line); border-bottom: 0; background: var(--bg); color: var(--fg); padding: 0; width: 100%; max-width: 100%; max-height: 88vh; margin: auto 0 0; border-radius: 16px 0 0 0; }
+dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
+@media (min-width: 720px) { dialog.sheet { width: min(600px, calc(100% - 48px)); margin: auto; border-bottom: 1px solid var(--line); border-radius: 16px 0 16px 0; } }
+.sheet-in { padding: 24px max(20px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); display: grid; gap: 20px; }
+@media (min-width: 720px) { .sheet-in { padding: 32px; } }
+.sheet-top { display: flex; align-items: center; gap: 10px; }
+.sheet-close { margin-left: auto; background: transparent; border: 1px solid var(--line); color: var(--muted); padding: 4px 12px; font-size: 14px; font-weight: 600; border-radius: 6px 0 6px 0; }
+.facts { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: 10px 16px; border-top: 1px solid var(--line); padding-top: 18px; }
+.facts dt { color: var(--dim); font-weight: 600; font-size: 14px; padding-top: 1px; }
+.facts dd { min-width: 0; }
+.facts .todo { color: var(--dim); }
+.log { list-style: none; padding: 0; display: grid; border-top: 1px solid var(--line); padding-top: 18px; }
+.log li { display: grid; grid-template-columns: 16px 6.5em minmax(0, 1fr); gap: 10px; align-items: center; padding-block: 6px; }
+.log .dot { width: 10px; height: 10px; border-radius: var(--sq) 0 var(--sq) 0; background: var(--fg); }
+.log .dot.green { background: var(--green); }
+.log .dot.off { background: transparent; border: 2px solid var(--dim); }
+.log time { color: var(--muted); font-size: 14px; }
+
+/* ---------- Admin ---------- */
+.admin { max-width: 960px; margin: 0 auto; padding-block: 24px 72px; display: grid; gap: 20px; }
+.admin-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.symbol { width: 36px; height: 36px; display: block; }
+.admin-title { font-weight: 600; color: var(--muted); }
+.tabs { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.tabs button { background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 6px 10px; color: var(--muted); font-weight: 600; transition: color var(--t1), border-color var(--t1); }
+.tabs button[aria-current="page"] { color: var(--fg); border-bottom-color: var(--fg); }
+.badge { display: inline-block; min-width: 20px; padding: 0 6px; margin-left: 4px; font-size: 12px; background: var(--fg); color: var(--bg); border-radius: 5px 0 5px 0; text-align: center; }
+.example { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--dim); border-block: 1px dashed var(--line); padding-block: 8px; }
+.admin-body { display: grid; gap: 16px; }
+.fade { animation: fade var(--t1) var(--ease); }
+
+.summary { font-size: clamp(20px, 4.6vw, 26px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; text-wrap: pretty; }
+.toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.checks { list-style: none; padding: 0; display: grid; gap: 8px; }
+.checks li { display: flex; gap: 10px; align-items: baseline; color: var(--muted); font-size: 15px; }
+.checks li::before { content: ""; width: 8px; height: 8px; flex: none; border: 2px solid var(--muted); border-radius: 2px 0 2px 0; transform: translateY(-1px); }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tile { border: 1px solid var(--line); padding: 16px; display: grid; gap: 4px; min-width: 0; }
+.tile-label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.tile-value { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.tile-sub { font-size: 13px; color: var(--dim); }
+.panel { border: 1px solid var(--line); padding: 20px; display: grid; gap: 16px; min-width: 0; }
+.panel-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.panel-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.panel-head .note { margin-left: auto; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+
+.brow { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(56px, 0.6fr)) 120px; gap: 12px; align-items: center; padding: 6px 0; background: transparent; border: 0; text-align: left; width: 100%; }
+.brow-name { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; }
+.brow-name strong { font-weight: 600; }
+.brow-m { display: grid; }
+.brow-m small { font-size: 12px; color: var(--dim); font-weight: 600; }
+.brow-m span { font-weight: 700; font-size: 18px; }
+.brow-empty { grid-column: 2 / -1; color: var(--dim); font-size: 14px; }
+@media (max-width: 640px) {
+  .brow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .brow-name, .brow .spark, .brow-empty { grid-column: 1 / -1; }
+  .brow .spark { width: 100%; }
+}
+.spark { width: 120px; height: 32px; display: block; }
+.spark .line { fill: none; stroke: var(--bar); stroke-width: 1.5; }
+.spark .dot { fill: var(--bar); }
+
+.bars { display: grid; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 3.5em; gap: 10px; align-items: center; font-size: 14px; }
+.bar-row span:first-child { color: var(--muted); }
+.bar-row span:last-child { text-align: right; font-weight: 600; }
+.track { height: 8px; background: var(--line); overflow: hidden; flex: 1 1 auto; }
+.fill { height: 100%; background: var(--bar); transform-origin: 0 50%; }
+.fill.met { background: var(--green); }
+.grow .fill { animation: grow var(--t2) var(--ease) both; }
+
+.crit { display: grid; gap: 16px; }
+.crit-row { display: grid; gap: 6px; }
+.crit-top { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; font-size: 15px; }
+.crit-top strong { font-weight: 600; }
+.crit-top span { margin-left: auto; color: var(--muted); }
+.crit-top b { color: var(--fg); font-weight: 700; }
+.crit-top b.met { color: var(--green); }
+.crit-bar { display: flex; align-items: center; gap: 10px; }
+.crit-sq { width: 10px; height: 10px; flex: none; border-radius: 2px 0 2px 0; border: 2px solid var(--line); }
+.crit-sq.met { border: 0; background: var(--green); }
+.crit-sq.land { animation: landSm 320ms var(--ease) 380ms both; }
+
+.chart { width: 100%; height: auto; display: block; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .mark { stroke: var(--dim); stroke-width: 1; stroke-dasharray: 3 4; }
+.chart .mark-sq { fill: var(--dim); }
+.chart .axis { fill: var(--dim); font-size: 11px; font-family: var(--font); }
+.chart .line { fill: none; stroke: var(--green); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart .line.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 900ms var(--ease) forwards; }
+.chart .dot { fill: var(--green); }
+.chart .dot.draw, .chart .endlabel.draw { animation: fade var(--t1) var(--ease) 850ms both; }
+.chart .endlabel { fill: var(--fg); font-size: 13px; font-weight: 700; font-family: var(--font); }
+.marks-legend { display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.marks-legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; background: var(--dim); border-radius: 2px 0 2px 0; }
+
+.bhead { display: grid; gap: 8px; }
+.bhead-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bhead h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions .btn-line { font-size: 14px; padding: 7px 14px; }
+.empty { border: 1px dashed var(--line); padding: 24px; color: var(--muted); display: grid; gap: 4px; }
+.empty strong { color: var(--fg); font-weight: 600; }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filters button { background: transparent; border: 1px solid var(--line); color: var(--muted); padding: 4px 12px; font-weight: 600; font-size: 14px; border-radius: 8px 0 8px 0; }
+.filters button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+.msgs { display: grid; gap: 10px; }
+.msg { border: 1px solid var(--line); display: grid; }
+.msg-sum { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 14px 16px; background: transparent; border: 0; text-align: left; width: 100%; }
+.msg-dot { width: 8px; height: 8px; border-radius: 2px 0 2px 0; background: var(--fg); }
+.msg-dot.read { background: transparent; border: 1px solid var(--dim); }
+.msg-from { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.msg-date { color: var(--dim); font-size: 13px; }
+.msg-line { grid-column: 2 / -1; color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msg-body { border-top: 1px solid var(--line); padding: 16px; display: grid; gap: 14px; animation: fade var(--t1) var(--ease); }
+.msg-body p { white-space: pre-wrap; }
+.msg-tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pill { background: transparent; border: 1px solid var(--line); color: var(--muted); padding: 4px 10px; font-size: 13px; font-weight: 600; border-radius: 6px 0 6px 0; }
+.pill[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+
+.cfield { display: grid; gap: 6px; }
+.cfield label { font-weight: 600; font-size: 14px; color: var(--muted); }
+.cfield input, .cfield textarea { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; width: 100%; border-radius: var(--r) 0 var(--r) 0; }
+.cfield textarea { min-height: 110px; resize: vertical; }
+.cfield input:focus, .cfield textarea:focus { border-color: var(--fg); outline: none; }
+.sheet-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--surface); border: 1px solid var(--line); padding: 12px 18px; font-size: 14px; z-index: 40; max-width: calc(100% - 32px); border-radius: var(--r) 0 var(--r) 0; animation: rise var(--t2) var(--ease); }
+
+
+
+.sheet[open] { animation: sheetIn var(--t2) var(--ease); }
+.sq.land { animation: landSm 320ms var(--ease) 200ms both; }
+@keyframes landSm { from { transform: translate(-6px, 6px); opacity: 0; } 50% { opacity: 1; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { transform: translate(-50%, 8px); opacity: 0; } }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes sheetIn { from { transform: translateY(32px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="proto">
+  <div class="proto-in gutter">
+    <span class="proto-tag">시안 v4</span>
+    <div class="seg" role="group" aria-label="화면">
+      <button type="button" id="v-public" data-view="public">공개 페이지</button>
+      <button type="button" id="v-admin" data-view="admin">관리자 모드</button>
+    </div>
+    <span class="proto-gap"></span>
+    <div class="seg" role="group" aria-label="시점">
+      <button type="button" id="p-now" data-phase="now">지금</button>
+      <button type="button" id="p-after" data-phase="after">핸드머니 출시 후 · 예시</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Public: stage + scroll track + screen layer ================= -->
+<div id="view-public">
+  <div class="stage" id="stage" aria-hidden="true">
+    <svg id="cam" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <clipPath id="grow-clip" clipPathUnits="userSpaceOnUse">
+          <rect x="-4000" y="-4000" width="4236.51" height="8000"/>
+          <polygon id="grow-poly" points="0,0 0,0 0,0"/>
+        </clipPath>
+        <clipPath id="sig-clip" clipPathUnits="userSpaceOnUse"><rect id="sig-rect" x="100" y="0" width="800" height="300"/></clipPath>
+      </defs>
+      <g id="sym" opacity="0">
+        <path clip-path="url(#grow-clip)" fill="#FFFFFF" d="M309.11,220.51l-30.47-30.47-42.13,42.13v-107.25h-30.24c-7.1,0-12.86,5.76-12.86,12.86v249.31h30.24c7.1,0,12.86-5.76,12.86-12.86v-81.11l72.61-72.61Z"/>
+        <g id="sym-sq" style="opacity:0;transform:scale(1.35)"><path fill="#4FB88A" d="M301.04,198.1v-44.55c0-4.82,3.91-8.73,8.73-8.73h44.55v44.55c0,4.82-3.91,8.73-8.73,8.73h-44.55Z"/></g>
+      </g>
+      <g id="wm" transform="translate(-25.0277 2.7587) scale(1.971638)">
+        <g clip-path="url(#sig-clip)"><path fill="#FFFFFF" d="M156.84,98.65c-3.97-.07-8,.59-11.58,2.3-5.16,2.47-9.32,6.45-12.61,11.78v-50.75h-15.35c-3.59,0-6.51,2.91-6.51,6.51v126.44h15.34c3.6,0,6.52-2.92,6.52-6.52v-5.65c1.97,3.86,4.63,6.98,8.05,9.28,4.21,2.84,9.17,4.25,14.9,4.25,10.3,0,18.27-3.46,23.91-10.38s8.46-16.69,8.46-29.3v-17.92c0-12.74-2.77-22.6-8.32-29.58-5.4-6.8-13-10.28-22.8-10.46ZM166.11,156.61c0,6.22-1.49,11.05-4.48,14.49-2.99,3.44-7.19,5.16-12.62,5.16-3.47,0-6.43-.67-8.87-2.01-2.44-1.34-4.3-3.28-5.58-5.81-1.28-2.53-1.92-5.59-1.92-9.19v-23.59c0-3.66.64-6.75,1.92-9.28,1.28-2.53,3.14-4.45,5.58-5.76,2.44-1.31,5.4-1.96,8.87-1.96,5.42,0,9.63,1.75,12.62,5.26,2.99,3.51,4.48,8.46,4.48,14.86v17.83Z"/><path fill="#FFFFFF" d="M260.7,100.51c-3.35-1.25-7.1-1.87-11.25-1.87-5.3,0-10.16,1.59-14.58,4.75-3.46,2.48-6.39,5.74-8.82,9.72v-13.1h-16.23c-3.61,0-6.53,2.92-6.53,6.53v88.38h16.23c3.61,0,6.53-2.92,6.53-6.53v-50.34c0-5.79,1.51-10.32,4.53-13.58,3.02-3.26,7.27-4.89,12.75-4.89,2.8,0,5.29.41,7.45,1.23,2.16.82,3.94,2.03,5.35,3.61l13.35-18.38c-2.5-2.44-5.43-4.28-8.78-5.53Z"/><path fill="#FFFFFF" d="M308.67,98.64c-7.38,0-14.08,1.2-20.12,3.61-6.04,2.41-10.91,5.78-14.63,10.1l14.54,12.25c2.8-2.13,5.97-3.76,9.51-4.89,3.54-1.13,7.13-1.69,10.79-1.69,5.73,0,10.16,1.46,13.3,4.39,3.14,2.93,4.71,7.04,4.71,12.34v4.02h-24.6c-10.97,0-19.2,2.33-24.69,7-5.49,4.66-8.23,11.72-8.23,21.16,0,9.94,2.73,17.31,8.18,22.13,5.46,4.82,13.61,7.22,24.46,7.22,4.21,0,8.14-.49,11.79-1.46,3.66-.97,6.81-2.45,9.47-4.43,1.46-1.09,2.64-2.36,3.61-3.79v8.32h13.69c3.6,0,6.52-2.92,6.52-6.52v-54.47c0-11.21-3.34-19.9-10.01-26.06-6.68-6.16-16.11-9.23-28.3-9.23ZM321.65,176.36c-3.41,1.53-8.56,2.28-15.45,2.28-5.67,0-9.91-.96-12.71-2.88-2.8-1.92-4.2-4.86-4.2-8.83s1.08-6.58,3.24-8.41c2.16-1.83,5.41-2.74,9.74-2.74h24.5v13.44c0,3.23-1.71,5.61-5.12,7.13Z"/><path fill="#FFFFFF" d="M410.31,98.64c-6.03,0-11.22,1.55-15.54,4.66-3.4,2.44-6.32,5.73-8.78,9.79v-13.08h-15.36c-3.59,0-6.49,2.91-6.49,6.49v88.42h15.36c3.59,0,6.49-2.91,6.49-6.49v-52.21c0-5.24,1.46-9.33,4.39-12.25,2.93-2.93,7.07-4.39,12.44-4.39s9.93,1.54,12.98,4.62c3.05,3.08,4.57,7.48,4.57,13.21v57.51h15.36c3.59,0,6.49-2.91,6.49-6.49v-51.11c0-12.31-2.77-21.84-8.32-28.57-5.55-6.74-13.41-10.1-23.59-10.1Z"/><path fill="#FFFFFF" d="M484.06,125.15c3.72-3.72,8.96-5.58,15.73-5.58,3.72,0,7.25.7,10.61,2.1,3.35,1.4,6.25,3.41,8.69,6.04l14.81-13.9c-3.66-4.87-8.55-8.62-14.67-11.25-6.13-2.62-13-3.93-20.62-3.93-13.35,0-23.68,3.67-30.99,11.02-7.31,7.35-10.97,17.72-10.97,31.13v12.89c0,13.53,3.67,24.01,11.02,31.45,7.35,7.43,17.66,11.15,30.95,11.15,7.56,0,14.42-1.29,20.58-3.88,6.15-2.59,11.06-6.26,14.72-11.02l-14.81-14.81c-2.44,2.81-5.33,4.97-8.69,6.49-3.35,1.53-6.89,2.29-10.61,2.29-6.77,0-12.01-1.89-15.73-5.67-3.72-3.78-5.58-9.11-5.58-16v-12.89c0-6.71,1.86-11.92,5.58-15.63Z"/><path fill="#FFFFFF" d="M589.44,98.64c-6.03,0-11.22,1.54-15.54,4.62-3.4,2.42-6.32,5.67-8.77,9.69v-50.97h-15.36c-3.59,0-6.5,2.91-6.5,6.5v126.45h15.36c3.59,0,6.5-2.91,6.5-6.5v-52.39c0-5.24,1.46-9.29,4.39-12.16,2.92-2.87,7.07-4.3,12.44-4.3s9.93,1.54,12.98,4.62c3.04,3.08,4.57,7.48,4.57,13.21v57.51h15.35c3.59,0,6.5-2.91,6.5-6.5v-51.11c0-12.31-2.77-21.84-8.32-28.57-5.54-6.74-13.41-10.1-23.59-10.1Z"/><path fill="#FFFFFF" d="M676.63,98.64c-12.98,0-23.04,3.87-30.17,11.61-7.13,7.74-10.7,18.68-10.7,32.82v10.7c0,13.59,3.72,24.08,11.16,31.45,7.43,7.38,17.89,11.06,31.36,11.06,6.09,0,12.14-1.23,18.15-3.7,6.01-2.47,11.42-5.96,16.23-10.47l-14.26-13.35c-2.8,2.44-5.96,4.34-9.46,5.71-3.51,1.37-7.06,2.06-10.65,2.06-7.07,0-12.56-1.93-16.46-5.81-3.48-3.45-5.32-8.3-5.7-14.4h59v-6.22c0-16.33-3.36-29-10.06-37.99-6.71-8.99-16.18-13.49-28.44-13.49ZM656.08,140.33c.27-6.69,2-11.99,5.33-15.77,3.62-4.11,8.7-6.17,15.22-6.17,5.24,0,9.42,1.84,12.53,5.53,3.11,3.69,4.96,8.82,5.57,15.41l.09,1.01h-38.75Z"/><path fill="#FFFFFF" d="M786.96,100.51c-3.35-1.25-7.1-1.87-11.25-1.87-5.31,0-10.16,1.59-14.59,4.75-3.46,2.48-6.39,5.74-8.82,9.72v-13.1h-16.27c-3.59,0-6.5,2.91-6.5,6.5v88.41h16.27c3.59,0,6.5-2.91,6.5-6.5v-50.38c0-5.79,1.5-10.32,4.52-13.58,3.02-3.26,7.27-4.89,12.75-4.89,2.81,0,5.29.41,7.45,1.23,2.17.82,3.95,2.03,5.35,3.61l13.35-18.38c-2.5-2.44-5.43-4.28-8.77-5.53Z"/></g>
+        <g id="wm-dot"><path fill="#4FB88A" d="M795.73,167.9v20.53c0,3.59-2.91,6.49-6.49,6.49h-20.53v-20.53c0-3.59,2.91-6.49,6.49-6.49h20.53Z"/></g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="scroll-track" id="track"><div class="unit" id="unit"></div></div>
+
+  <main class="ov" id="ov">
+    <section class="sc sc-0 gutter" data-in="-1" data-out="1.0" data-scene="0" aria-label="브랜처">
+      <p class="kicker">1인 개발 브랜드</p>
+      <h1 class="big">빠르게 만들고, 천천히 키운다.</h1>
+      <div class="hint"><i></i>스크롤</div>
+    </section>
+
+    <section class="sc sc-2" data-in="2.0" data-out="3.65" data-scene="1" aria-labelledby="s2t">
+      <p class="eyebrow">소개</p>
+      <h2 class="big" id="s2t">브랜처는<br>1인 개발 브랜드입니다.</h2>
+      <p class="sub">직접 만든 서비스를 하나씩 내놓고, 반응이 오는 것을 키웁니다.</p>
+      <div class="facts-row tnum">
+        <div><small>운영</small><b>1인</b></div>
+        <div><small>시작</small><b>2026.10</b></div>
+        <div><small>가지</small><b id="fact-branches">1</b></div>
+      </div>
+    </section>
+
+    <section class="sc sc-3" data-in="4.0" data-out="6.25" data-scene="2" aria-labelledby="s3t">
+      <h2 class="title" id="s3t">모든 서비스는 하나의 가지에서 시작됩니다.</h2>
+      <ol class="stations" id="stations">
+        <li><strong>뻗는다<span>Branch out</span></strong><p>새로운 아이디어로 가지를 뻗습니다.</p></li>
+        <li><strong>내놓는다<span>Ship fast</span></strong><p>작게 만들어 일찍 내놓습니다.</p></li>
+        <li><strong>키운다<span>Merge what works</span></strong><p>반응이 오는 것만, 천천히 키웁니다.</p></li>
+      </ol>
+    </section>
+
+    <section class="sc sc-4 gutter" id="sc4" data-in="6.6" data-out="7.6" data-scene="3" aria-label="내놓기">
+      <p class="big">내놓는 순간이 <br class="br-m">마침표입니다.</p>
+    </section>
+
+    <section class="sc sc-g gutter" data-in="7.8" data-out="9.45" data-scene="4" aria-labelledby="s5t">
+      <div class="wrap">
+        <div><p class="eyebrow">만든 것</p><h2 class="big" id="s5t">지금까지 뻗은 가지</h2></div>
+        <ol class="cards" id="cards"></ol>
+      </div>
+    </section>
+
+    <section class="sc sc-g gutter" data-in="9.45" data-out="10.95" data-scene="5" aria-labelledby="s6t">
+      <div class="wrap contact">
+        <div class="contact-side">
+          <div><p class="eyebrow">문의</p><h2 class="big" id="s6t">메일로 연락 주세요.</h2></div>
+          <p class="sub">메일이나 양식으로 보내주세요. 확인하고 답장합니다.</p>
+          <div class="mail diag">
+            <span class="mail-addr" id="mail-addr">brancher.lab@gmail.com</span>
+            <button type="button" class="btn-line diag" id="copy-mail">복사</button>
+          </div>
+        </div>
+        <div>
+          <form id="contact-form" novalidate>
+            <div class="field"><label for="f-mail">회신 받을 메일</label><input id="f-mail" type="email" autocomplete="email" placeholder="name@example.com" required></div>
+            <div class="field"><label for="f-body">내용</label><textarea id="f-body" required></textarea></div>
+            <div class="form-foot">
+              <button type="submit" class="btn-ink btn-ship diag" id="send">보내기</button>
+              <span class="note" id="privacy">회신에만 씁니다. 처리 후 1년 뒤 삭제합니다.</span>
+            </div>
+            <p class="err" id="form-err" role="alert" hidden></p>
+          </form>
+          <div class="sent diag" id="sent" hidden>
+            <i class="sq done land"></i>
+            <div><strong>받았습니다. 메일로 답장합니다.</strong><span class="note">시안이라 실제로 보내지지 않습니다.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc sc-7 gutter" data-in="11.6" data-out="999" data-scene="6" aria-label="brancher">
+      <p class="big">지나온 길이 brancher입니다.</p>
+      <p class="sign">Branch out. Build ventures.</p>
+      <div class="foot-meta">
+        <a href="https://www.instagram.com/brancher.dev/" target="_blank" rel="noopener">@brancher.dev</a>
+        <span>brancher.lab@gmail.com</span>
+        <span>© brancher</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="chrome scene-label tnum" id="scene-label" aria-hidden="true"><span id="sl-n">01/07</span><b id="sl-t">brancher</b></div>
+  <nav class="chrome mini" aria-label="장면 이동">
+    <ul class="mini-menu" id="mini-menu" hidden>
+      <li><button type="button" data-jump="0">처음</button></li>
+      <li><button type="button" data-jump="2.7">소개</button></li>
+      <li><button type="button" data-jump="5.0">방식</button></li>
+      <li><button type="button" data-jump="8.6">만든 것</button></li>
+      <li><button type="button" data-jump="10.1">문의</button></li>
+      <li><button type="button" data-jump="12.2">끝</button></li>
+    </ul>
+    <button type="button" class="mini-btn" id="mini-btn" aria-expanded="false" aria-controls="mini-menu">
+      <span>이동</span>
+      <svg id="mini-svg" viewBox="105 105 302 302" aria-hidden="true"></svg>
+    </button>
+  </nav>
+</div>
+
+<dialog class="sheet" id="detail" aria-labelledby="detail-title"><div class="sheet-in" id="detail-in"></div></dialog>
+
+<!-- ================= Admin ================= -->
+<main id="view-admin" class="gutter" hidden>
+  <div class="admin">
+    <div class="admin-head">
+      <svg class="symbol" role="img" aria-label="brancher" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <path fill="#FFFFFF" d="M309.11,220.51l-30.47-30.47-42.13,42.13v-107.25h-30.24c-7.1,0-12.86,5.76-12.86,12.86v249.31h30.24c7.1,0,12.86-5.76,12.86-12.86v-81.11l72.61-72.61Z"/>
+  <path fill="#4FB88A" d="M301.04,198.1v-44.55c0-4.82,3.91-8.73,8.73-8.73h44.55v44.55c0,4.82-3.91,8.73-8.73,8.73h-44.55Z"/>
+</svg>
+      <span class="admin-title">brancher admin</span>
+      <nav class="tabs" aria-label="관리자 화면">
+        <button type="button" id="t-main" data-tab="main">main</button>
+        <button type="button" id="t-branch" data-tab="branch">branch 01</button>
+        <button type="button" id="t-inbox" data-tab="inbox">inbox<span class="badge tnum" id="inbox-badge"></span></button>
+      </nav>
+    </div>
+    <div class="example"><span>예시 데이터입니다. 실제 숫자가 아닙니다.</span><span class="tnum">2026.11.25 기준</span></div>
+    <div id="admin-body" class="admin-body"></div>
+  </div>
+</main>
+
+<dialog class="sheet" id="confirm" aria-labelledby="confirm-title"><form class="sheet-in" id="confirm-form" novalidate></form></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TODAY = '2026.11.25';
+  var state = { view: 'public', tab: 'main', phase: 'now', period: 7, filter: 'new', open: null, status: 'open', shipDate: null, log: [] };
+  var seenAdmin = false, drawnChart = false, pendingLand = false;
+  try { var saved = localStorage.getItem('brancher-phase'); if (saved === 'now' || saved === 'after') state.phase = saved; } catch (e) {}
+  resetBranch();
+  function resetBranch() {
+    if (state.phase === 'after') { state.status = 'shipped'; state.shipDate = '2026.12.01'; state.log = [{ d: '2026.12.01', t: '출시', c: 'green' }]; }
+    else { state.status = 'open'; state.shipDate = null; state.log = []; }
+  }
+
+  /* ---------- Example data (admin) ---------- */
+  var PERIODS = {
+    after: { 7: { v: 412, p: 349, src: [264, 74, 37, 37], go: 58, conv: '0.5%' }, 30: { v: 1630, p: 1410, src: [1010, 310, 160, 150], go: 221, conv: '0.4%' }, 90: { v: 3880, p: 2950, src: [2400, 700, 420, 360], go: 402, conv: '0.4%' } },
+    now: { v: 87, p: 0, src: [58, 17, 4, 8], go: null, conv: '2.3%' }
+  };
+  var SRC = ['인스타 바이오', '인스타 스토리', '검색', '직접'];
+  var REACH = { now: [['서명', 100], ['소개', 81], ['방식', 63], ['만든 것', 48], ['문의', 37]], after: [['서명', 100], ['소개', 79], ['방식', 61], ['만든 것', 47], ['문의', 35]] };
+  var DAU = [44, 39, 31, 28, 26, 25, 27, 24, 23, 25, 26, 24, 27, 28, 26, 29, 30, 28, 31, 32, 30, 33, 34, 33, 35, 36, 34, 37, 36, 38];
+  var MARKS = [[0, '출시'], [17, '인스타 게시물 007']];
+  var CRIT = [{ name: 'D1 리텐션', goal: 35, cur: 41, unit: '%' }, { name: 'D30 리텐션', goal: 20, cur: 17, unit: '%' }, { name: 'MAU', goal: 300, cur: 286, unit: '' }];
+  var MSGS = [
+    { id: 1, date: '2026.11.24', from: 'partner@example.com', kind: '광고', status: 'new', body: '안녕하세요. 인스타 게시물 광고 단가와 진행 방식을 여쭙고 싶습니다.\n가능한 일정도 함께 알려주시면 감사하겠습니다.' },
+    { id: 2, date: '2026.11.22', from: 'maker@example.com', kind: '협업', status: 'new', body: '1인 개발을 하고 있습니다. 서로의 서비스를 소개하는 협업이 가능한지 궁금합니다.' },
+    { id: 3, date: '2026.11.18', from: 'hello@example.com', kind: '기타', status: 'replied', body: '다음 서비스는 언제쯤 나오나요? 소식 기다리겠습니다.' },
+    { id: 4, date: '2026.11.09', from: 'biz@example.com', kind: '제휴', status: 'archived', body: '제휴 제안서를 보내드립니다. 검토 부탁드립니다.' }
+  ];
+  var STATUS = { 'new': '새 문의', replied: '답장함', archived: '보관' };
+  var PUBLIC_STATUS = { open: '만드는 중', shipped: '출시', merged: '키우는 중', closed: '종료' };
+  var STATUS_LINE = { shipped: '출시. 반응을 보고 키울지 정합니다.', merged: '키우는 중. 반응이 확인되어 본격적으로 키웁니다.', closed: '종료. 기록은 남겨 둡니다.' };
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmt(n) { return Number(n).toLocaleString('ko-KR'); }
+  function isDone(s) { return s === 'shipped' || s === 'merged'; }
+  var toastTimer;
+  function toast(msg) {
+    var t = $('toast'); t.hidden = true; void t.offsetWidth; t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 2800);
+  }
+
+  /* ======================= Cards (inside the green) ======================= */
+  function renderCards() {
+    var s = state.status, done = isDone(s), named = s !== 'open';
+    var landing = pendingLand && done && !REDUCE; if (landing) pendingLand = false;
+    var h = '<li class="card diag"><div class="b-head"><i class="sq ' + (done ? 'done' : 'open') + (landing ? ' land' : '') + '"></i><span class="b-no tnum">branch 01</span><span class="chip' + (done ? ' done' : '') + '">' + PUBLIC_STATUS[s] + '</span></div>';
+    if (named) {
+      h += '<h3 class="b-name">핸드머니</h3><p class="b-desc">계획·기록·검토 자산관리 앱</p>' + (state.shipDate ? '<p class="b-meta tnum">출시 ' + state.shipDate + '</p>' : '') +
+        '<div class="b-actions">' + (done ? '<button type="button" class="btn-go diag" data-go="1">바로가기</button>' : '') + '<button type="button" class="btn-line btn-sm diag" data-detail="1">자세히</button></div>';
+    } else h += '<h3 class="b-name">출시 준비 중</h3><p class="b-desc">출시할 때 이름을 공개합니다.</p>';
+    h += '</li><li class="card slot diag"><div class="b-head"><i class="sq slot"></i><span class="b-no tnum">branch 02</span></div><p class="b-desc">다음 가지가 열리면 여기에 놓입니다.</p></li>';
+    $('cards').innerHTML = h;
+  }
+  function renderDetail() {
+    var s = state.status, done = isDone(s);
+    var log = state.log.slice().reverse().map(function (e) { return '<li><i class="dot ' + (e.c || '') + '"></i><time class="tnum">' + e.d + '</time><span>' + esc(e.t) + '</span></li>'; }).join('') +
+      '<li><i class="dot off"></i><time class="tnum">—</time><span class="note">시작 (날짜 미입력)</span></li>';
+    $('detail-in').innerHTML =
+      '<div class="sheet-top"><i class="sq ' + (done ? 'done' : 'open') + '"></i><span class="b-no tnum">branch 01</span><span class="chip' + (done ? ' done' : '') + '">' + PUBLIC_STATUS[s] + '</span><button type="button" class="sheet-close" data-close="detail">닫기</button></div>' +
+      '<div><h2 class="b-name" id="detail-title">핸드머니</h2><p class="b-desc">계획·기록·검토 자산관리 앱</p></div>' +
+      '<dl class="facts"><dt>무엇</dt><dd>계획하고, 기록하고, 돌아보는 자산관리 앱</dd><dt>왜</dt><dd class="todo">출시 때 작성</dd><dt>기술</dt><dd class="todo">출시 때 작성</dd>' +
+      '<dt>기간</dt><dd class="tnum">' + (state.shipDate ? '출시 ' + state.shipDate : '—') + '</dd><dt>상태</dt><dd>' + (STATUS_LINE[s] || '만드는 중') + '</dd></dl>' +
+      '<div class="label">기록</div><ol class="log">' + log + '</ol>' +
+      (done ? '<div class="b-actions"><button type="button" class="btn-go diag" data-go="1">바로가기</button></div>' : '');
+  }
+
+  /* ======================= Camera ======================= */
+  /* Keyframes in symbol units. p = scroll position in screen heights.
+     a = world point pinned at screen fraction s; w = world units across the screen width (wp on portrait screens). */
+  var KF = [
+    { p: 0.0, ax: 868, ay: 256, sx: 0.5, sy: 0.40, w: 1880, wp: 1650, syp: 0.36 },
+    { p: 0.7, ax: 868, ay: 256, sx: 0.5, sy: 0.40, w: 1880, wp: 1650, syp: 0.36 },
+    { p: 1.8, ax: 193.41, ay: 387.09, sx: 0.08, sy: 0.94, w: 300, wp: 200, sxp: 0.10, syp: 0.82 },
+    { p: 3.4, ax: 193.41, ay: 320, sx: 0.08, sy: 0.94, w: 300, wp: 200, sxp: 0.10, syp: 0.82, ayp: 387.09 },
+    { p: 4.0, ax: 236.5, ay: 262, sx: 0.30, sy: 0.60, w: 250, wp: 210, sxp: 0.30, syp: 0.50 },
+    { p: 5.1, ax: 265, ay: 233, sx: 0.42, sy: 0.48, w: 230, wp: 180, sxp: 0.40, syp: 0.45 },
+    { p: 6.1, ax: 293.9, ay: 205.3, sx: 0.5, sy: 0.52, w: 200, wp: 140, sxp: 0.45, syp: 0.45 },
+    { p: 6.8, ax: 327.68, ay: 171.46, sx: 0.5, sy: 0.58, w: 296, wp: 170, syp: 0.56 },
+    { p: 7.5, ax: 327.68, ay: 171.46, sx: 0.5, sy: 0.58, w: 296, wp: 170, syp: 0.56 },
+    { p: 8.1, ax: 327.68, ay: 171.46, sx: 0.5, sy: 0.5, w: 24, wp: 20 },
+    { p: 10.8, ax: 327.68, ay: 171.46, sx: 0.5, sy: 0.5, w: 24, wp: 20 },
+    { p: 11.7, ax: 256, ay: 256, sx: 0.5, sy: 0.40, w: 1150, wp: 440, syp: 0.38, centre: true },
+    { p: 12.4, ax: 256, ay: 256, sx: 0.5, sy: 0.40, w: 1150, wp: 440, syp: 0.38 }
+  ];
+  var P_END = 12.4;
+  /* With reduced motion the camera cuts to each scene's resting frame instead of flying. */
+  var HOLD = [[1.2, 0], [3.7, 3], [6.3, 6], [7.6, 7], [11.2, 9], [99, 11]];
+  var SCENES = ['brancher', '소개', '방식', '내놓기', '만든 것', '문의', 'brancher'];
+  var C0 = 236.51, C1 = 309.11; /* branch growth front: x from the stem's edge to the far tip corner */
+
+  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  function camAt(p, W, H) {
+    var portrait = H > W, i = 0;
+    if (REDUCE) { for (var h = 0; h < HOLD.length; h++) if (p < HOLD[h][0]) { i = HOLD[h][1]; break; } return frame(KF[i], KF[i], 0, portrait, W, H); }
+    while (i < KF.length - 2 && p > KF[i + 1].p) i++;
+    var a = KF[i], b = KF[i + 1], t = clamp((p - a.p) / (b.p - a.p), 0, 1);
+    return frame(a, b, ease(t), portrait, W, H);
+  }
+  /* A keyframe resolved for this screen: its world anchor, where that anchor sits, and the view box. */
+  function base(k, portrait, W, H) {
+    function g(key) { return portrait && k[key + 'p'] != null ? k[key + 'p'] : k[key]; }
+    var w = portrait ? (k.wp || k.w) : k.w, h = w * H / W, ax = g('ax'), ay = g('ay'), sx = g('sx'), sy = g('sy');
+    return { ax: ax, ay: ay, sx: sx, sy: sy, w: w, h: h, x: ax - sx * w, y: ay - sy * h };
+  }
+  /* Zoom toward the next keyframe's anchor: that point slides smoothly from where it is now to where it
+     will rest, while the zoom moves in log space. So the dive keeps the b's stem on screen the whole way. */
+  function frame(a, b, e, portrait, W, H) {
+    var A = base(a, portrait, W, H), B = base(b, portrait, W, H);
+    var w = Math.exp(lerp(Math.log(A.w), Math.log(B.w), e)), h = w * H / W;
+    if (b.centre) { /* pull back: the view's anchor glides to the canvas centre, so the mark shrinks into the middle */
+      var ax = lerp(A.ax, B.ax, e), ay = lerp(A.ay, B.ay, e), sx = lerp(A.sx, B.sx, e), sy = lerp(A.sy, B.sy, e);
+      return { x: ax - sx * w, y: ay - sy * h, w: w, h: h, cx: ax - sx * w + w / 2, cy: ay - sy * h + h / 2 };
+    }
+    var fx = lerp((B.ax - A.x) / A.w, B.sx, e), fy = lerp((B.ay - A.y) / A.h, B.sy, e);
+    var x = B.ax - fx * w, y = B.ay - fy * h;
+    return { x: x, y: y, w: w, h: h, cx: x + w / 2, cy: y + h / 2 };
+  }
+
+  /* ======================= Scroll → everything ======================= */
+  var unitPx = 800, trackTop = 0, sigDone = !document.documentElement.classList.contains('sig');
+  function measure() {
+    unitPx = $('unit').getBoundingClientRect().height || window.innerHeight;
+    $('track').style.height = Math.round((P_END + 1) * unitPx) + 'px';
+    trackTop = $('track').getBoundingClientRect().top + window.scrollY;
+  }
+  function progress() { return Math.max(0, (window.scrollY - trackTop) / unitPx); }
+
+  var landed = false, curScene = -1;
+  function update() {
+    if (state.view !== 'public') return;
+    var p = progress(), W = window.innerWidth, H = window.innerHeight;
+    var f = camAt(p, W, H);
+    $('cam').setAttribute('viewBox', f.x.toFixed(3) + ' ' + f.y.toFixed(3) + ' ' + f.w.toFixed(3) + ' ' + f.h.toFixed(3));
+
+    /* wordmark → symbol: the b's stem is the symbol's stem, so the symbol switches on under it and the letters fade */
+    var wmO = REDUCE ? (p < 1.2 ? 1 : 0) : clamp((1.45 - p) / 0.3, 0, 1);
+    $('wm').setAttribute('opacity', wmO.toFixed(3));
+    $('sym').setAttribute('opacity', sigDone ? 1 : 0);
+
+    /* branch grows out of the stem along 45° */
+    var c = REDUCE ? (p >= 4 ? C1 : C0) : lerp(C0, C1, clamp((p - 4.0) / (6.1 - 4.0), 0, 1));
+    var gp = '236.51,-4000 ' + c.toFixed(2) + ',-4000 ' + c.toFixed(2) + ',4000 236.51,4000';
+    $('grow-poly').setAttribute('points', gp);
+
+    /* the square lands at the gap: ship */
+    /* the sentence sits just above the centred square (keyframe 7: square centre at sy, w units across) */
+    var pt = H > W, w7 = pt ? 170 : 296, sy7 = pt ? 0.56 : 0.58, half = 26.64 * W / w7;
+    $('sc4').style.setProperty('--s4b', (H * (1 - sy7) + half + (pt ? 22 : 34)).toFixed(1) + 'px');
+    var land = p >= (REDUCE ? 6.3 : 6.7);
+    if (land !== landed) {
+      landed = land;
+      ['sym-sq'].forEach(function (id) { var q = $(id); if (!q) return; q.style.opacity = land ? 1 : 0; q.style.transform = land ? 'none' : 'scale(1.35)'; });
+    }
+
+    /* stations along the branch */
+    var gi = clamp(Math.floor(((p - 4.0) / 2.1) * 3), 0, 2);
+    Array.prototype.forEach.call($('stations').children, function (li, i) { li.classList.toggle('on', i === gi); });
+
+    /* screen layer */
+    var FW = 0.25, scene = p < 1 ? 0 : curScene, best = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.sc'), function (el) {
+      var a = parseFloat(el.dataset.in), b = parseFloat(el.dataset.out);
+      var o = clamp((p - a) / FW, 0, 1) * clamp((b - p) / FW, 0, 1);
+      if (REDUCE) o = (p >= a && p < b) ? 1 : 0;
+      el.style.opacity = o.toFixed(3);
+      el.style.visibility = o > 0.02 ? 'visible' : 'hidden';
+      el.classList.toggle('live', o > 0.6);
+      if (o > best) { best = o; scene = +el.dataset.scene; }
+    });
+    if (!best) Array.prototype.forEach.call(document.querySelectorAll('.sc'), function (el) { if (p >= parseFloat(el.dataset.in)) scene = +el.dataset.scene; });
+    if (scene !== curScene) {
+      curScene = scene;
+      $('sl-n').textContent = '0' + (scene + 1) + '/07'; $('sl-t').textContent = SCENES[scene];
+      document.querySelectorAll('#mini-menu button').forEach(function (b, i) { var map = [0, 1, 2, 2, 3, 4, 5]; if (map[scene] === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    }
+    /* inside the square the whole screen is green: chrome turns black */
+    var greenNow = f.x >= 301.04 && f.y >= 144.82 && f.x + f.w <= 354.32 && f.y + f.h <= 198.1;
+    document.body.classList.toggle('on-green', greenNow);
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; update(); }); }, { passive: true });
+
+  /* Signature: letters extend left→right, then the period lands. Once per visit. */
+  function signature() {
+    if (sigDone) { $('sig-rect').setAttribute('width', 800); return; }
+    var t0 = null, dot = $('wm-dot');
+    dot.style.opacity = 0;
+    function step(ts) {
+      if (!t0) t0 = ts; var t = ts - t0;
+      var k = clamp((t - 120) / 700, 0, 1), e = 1 - Math.pow(1 - k, 3);
+      $('sig-rect').setAttribute('width', (800 * e).toFixed(1));
+      var d = clamp((t - 800) / 340, 0, 1), de = 1 - Math.pow(1 - d, 3);
+      dot.style.opacity = Math.min(1, d * 2); dot.style.transform = 'translateY(' + (-30 * (1 - de)).toFixed(2) + 'px)';
+      if (t < 1200) requestAnimationFrame(step); else { sigDone = true; update(); }
+    }
+    $('sig-rect').setAttribute('width', 0);
+    requestAnimationFrame(step);
+  }
+
+  /* Minimap button: the original symbol, untouched (white version, favicon crop centred on the 512 canvas). */
+  function buildMini() {
+    var stem = document.querySelector('#sym path'), sq = document.querySelector('#sym-sq path');
+    $('mini-svg').innerHTML = '<path fill="#FFFFFF" d="' + stem.getAttribute('d') + '"/><path fill="#4FB88A" d="' + sq.getAttribute('d') + '"/>';
+  }
+
+  /* ======================= Admin (shared with v3) ======================= */
+  /* ======================= Charts ======================= */
+  function lineChart(vals, animate) {
+    var W = 600, H = 210, L = 34, R = 44, T = 14, B = 30, max = 50, n = vals.length;
+    function x(i) { return L + (W - L - R) * i / (n - 1); }
+    function y(v) { return T + (H - T - B) * (1 - v / max); }
+    var a = animate ? ' draw' : '';
+    var s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="최근 30일 DAU. 오늘 ' + vals[n - 1] + '명">';
+    [0, 25, 50].forEach(function (g) {
+      s += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '"/>';
+      s += '<text class="axis tnum" x="' + (L - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end">' + g + '</text>';
+    });
+    MARKS.forEach(function (m) {
+      var mx = x(m[0]);
+      s += '<line class="mark" x1="' + mx + '" x2="' + mx + '" y1="' + T + '" y2="' + y(0) + '"/>';
+      s += '<rect class="mark-sq" x="' + (mx - 4) + '" y="' + (y(0) - 4) + '" width="8" height="8"/>';
+    });
+    s += '<text class="axis" x="' + L + '" y="' + (H - 8) + '">30일 전</text>';
+    s += '<text class="axis" x="' + (W - R) + '" y="' + (H - 8) + '" text-anchor="end">오늘</text>';
+    var d = vals.map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' ');
+    s += '<path class="line' + a + '" pathLength="1" d="' + d + '"/>';
+    s += '<circle class="dot' + a + '" cx="' + x(n - 1) + '" cy="' + y(vals[n - 1]) + '" r="4.5"/>';
+    s += '<text class="endlabel tnum' + a + '" x="' + (x(n - 1) + 9) + '" y="' + (y(vals[n - 1]) + 4) + '">' + vals[n - 1] + '</text>';
+    return s + '</svg>';
+  }
+  function spark(vals) {
+    var W = 120, H = 32, n = vals.length, max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+    function x(i) { return 2 + (W - 6) * i / (n - 1); }
+    function y(v) { return 3 + (H - 6) * (1 - (v - min) / (max - min || 1)); }
+    var d = vals.map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' ');
+    return '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><path class="line" d="' + d + '"/><circle class="dot" cx="' + x(n - 1) + '" cy="' + y(vals[n - 1]) + '" r="2.5"/></svg>';
+  }
+  function bars(rows, total) {
+    return '<div class="bars">' + rows.map(function (r) {
+      var pct = total ? Math.round(r[1] / total * 100) : r[1];
+      return '<div class="bar-row"><span>' + esc(r[0]) + '</span><div class="track"><div class="fill" style="width:' + pct + '%"></div></div><span class="tnum">' + pct + '%</span></div>';
+    }).join('') + '</div>';
+  }
+
+  /* ======================= Admin ======================= */
+  function newCount() { return MSGS.filter(function (m) { return m.status === 'new'; }).length; }
+  function pdata() { return state.phase === 'after' ? PERIODS.after[state.period] : PERIODS.now; }
+  function periodWord(prev) {
+    if (state.period === 7) return prev ? '지난주' : '이번 주';
+    return prev ? '이전 ' + state.period + '일' : '최근 ' + state.period + '일';
+  }
+  function metCount() { return CRIT.filter(function (c) { return c.cur >= c.goal; }).length; }
+  function hasNumbers() { return state.phase === 'after' && state.status !== 'open'; }
+
+  function summary() {
+    var d = pdata(), n = newCount();
+    var s = periodWord(false) + ' 방문 ' + fmt(d.v) + '명.';
+    if (d.p) s += ' ' + periodWord(true) + '보다 ' + Math.round((d.v - d.p) / d.p * 100) + '% 늘었습니다.';
+    s += n ? ' 새 문의 ' + n + '건.' : ' 새 문의 없음.';
+    if (state.status === 'open') s += ' 아직 출시한 가지가 없습니다.';
+    else if (state.status === 'shipped') s += hasNumbers() ? ' branch 01은 merge 기준 3개 중 ' + metCount() + '개를 넘었습니다.' : ' branch 01을 방금 출시했습니다.';
+    else if (state.status === 'merged') s += ' branch 01을 키우는 중입니다.';
+    else s += ' branch 01을 닫았습니다.';
+    return s;
+  }
+  function checks() {
+    var c = [];
+    if (state.status === 'open') c.push('출시 전에 branch 01의 merge 기준을 확정하세요.');
+    if (state.status === 'shipped' && hasNumbers()) { c.push('D30 리텐션 17%. 기준 20%까지 3%p 남았습니다.'); c.push('merge 기한까지 26일.'); }
+    if (newCount()) c.push('답장하지 않은 문의 ' + newCount() + '건.');
+    return c;
+  }
+  function tile(label, value, sub, count) {
+    var attr = count != null ? ' data-to="' + count.to + '" data-suffix="' + (count.suffix || '') + '" data-dec="' + (count.dec || 0) + '"' : '';
+    return '<div class="tile diag"><span class="tile-label">' + esc(label) + '</span><span class="tile-value tnum"' + attr + '>' + esc(value) + '</span><span class="tile-sub tnum">' + esc(sub) + '</span></div>';
+  }
+  function metric(label, v) { return '<span class="brow-m"><small>' + label + '</small><span class="tnum">' + esc(v) + '</span></span>'; }
+  function statusChip(s) { return '<span class="chip' + (isDone(s) ? ' done' : '') + '">' + s + '</span>'; }
+
+  function renderMain() {
+    var d = pdata(), after = state.phase === 'after';
+    var delta = d.p ? periodWord(true) + ' 대비 +' + Math.round((d.v - d.p) / d.p * 100) + '%' : '공개 7일째';
+    var h = '<p class="summary tnum">' + esc(summary()) + '</p>';
+    var c = checks();
+    if (c.length) h += '<ul class="checks">' + c.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    h += '<div class="toolbar"><div class="seg" role="group" aria-label="기간">' + [7, 30, 90].map(function (p) {
+      return '<button type="button" data-period="' + p + '" aria-pressed="' + (state.period === p) + '">' + p + '일</button>';
+    }).join('') + '</div>' + (after ? '' : '<span class="note">공개 7일째라 기간을 바꿔도 같습니다.</span>') + '</div>';
+    h += '<div class="tiles">' +
+      tile('포트폴리오 방문자', fmt(d.v), delta, { to: d.v }) +
+      tile('새 문의', newCount(), '답장까지 평균 1.4일', { to: newCount() }) +
+      tile('서비스로 넘어간 수', d.go == null ? '—' : fmt(d.go), d.go == null ? '공개된 서비스 없음' : '방문자의 ' + Math.round(d.go / d.v * 100) + '%', d.go == null ? null : { to: d.go }) +
+      tile('문의 전환', d.conv, '방문 대비 양식 제출', { to: parseFloat(d.conv), suffix: '%', dec: 1 }) +
+      '</div>';
+    h += '<section class="panel diag"><div class="panel-head"><h2>가지</h2><span class="note">DAU · WAU · MAU는 핵심 행동 기준</span></div>';
+    h += '<button type="button" class="brow" data-tab="branch"><span class="brow-name"><i class="sq ' + (isDone(state.status) ? 'done' : 'open') + '"></i><strong>branch 01 ▸ 핸드머니</strong>' + statusChip(state.status) + '</span>';
+    if (hasNumbers()) h += metric('DAU', '38') + metric('WAU', '121') + metric('MAU', '286') + metric('지난주', '+12%') + spark(DAU);
+    else if (state.status === 'open') h += '<span class="brow-empty">출시 전. ship하면 숫자가 쌓이기 시작합니다.</span>';
+    else h += '<span class="brow-empty">방금 출시했습니다. 내일부터 숫자가 보입니다.</span>';
+    h += '</button></section>';
+    h += '<div class="grid2">' +
+      '<section class="panel diag grow"><div class="panel-head"><h2>유입 경로</h2><span class="note">포트폴리오 · ' + (after ? state.period : 7) + '일</span></div>' + bars(SRC.map(function (n, i) { return [n, d.src[i]]; }), d.v) + '</section>' +
+      '<section class="panel diag grow"><div class="panel-head"><h2>어디까지 읽는가</h2><span class="note">블록 도달률</span></div>' + bars(REACH[state.phase], 0) + '</section>' +
+      '</div>';
+    h += '<section class="panel diag"><div class="panel-head"><h2>브랜처 전체</h2></div><div class="tiles">' +
+      tile('가지', '1', state.status) +
+      tile('시작 → 출시', after ? '47일' : '—', after ? 'branch 01' : '출시 전') +
+      tile('마지막 출시 뒤', after ? '30일' : '—', '오픈 주기 확인용') +
+      tile('merge 비율', state.status === 'merged' ? '100%' : '—', state.status === 'merged' ? '1 / 1' : '판단한 가지 없음') +
+      '</div></section>';
+    return h;
+  }
+
+  function renderBranch() {
+    var s = state.status, nums = hasNumbers();
+    var can = { ship: s === 'open', merge: s === 'shipped', close: s !== 'closed' };
+    var h = '<div class="bhead"><div class="bhead-top"><i class="sq ' + (isDone(s) ? 'done' : 'open') + '"></i>' + statusChip(s) + '<span class="note tnum">' + (state.shipDate ? '출시 ' + state.shipDate : '시작일 미입력') + '</span></div>' +
+      '<h2>branch 01 ▸ 핸드머니</h2><p class="b-desc">계획·기록·검토 자산관리 앱</p>' +
+      '<div class="actions">' + ['ship', 'merge', 'close'].map(function (a) {
+        return '<button type="button" class="btn-line diag" data-act="' + a + '"' + (can[a] ? '' : ' disabled') + '>' + a + '</button>';
+      }).join('') + '</div></div>';
+
+    h += '<section class="panel diag' + (nums ? ' grow' : '') + '"><div class="panel-head"><h2>merge 기준</h2><span class="note tnum">' + (nums ? '출시 후 8주 · 남은 26일' : '출시 후 8주 · 예시 기준') + '</span></div><div class="crit">';
+    CRIT.forEach(function (c) {
+      var met = nums && c.cur >= c.goal, pct = nums ? Math.min(100, Math.round(c.cur / c.goal * 100)) : 0;
+      h += '<div class="crit-row"><div class="crit-top"><strong>' + c.name + '</strong><span class="tnum">' +
+        (nums ? '<b class="' + (met ? 'met' : '') + '">' + fmt(c.cur) + c.unit + '</b> / ' : '— / ') + fmt(c.goal) + c.unit + ' 이상</span></div>' +
+        '<div class="crit-bar"><div class="track"><div class="fill' + (met ? ' met' : '') + '" style="width:' + pct + '%"></div></div><i class="crit-sq' + (met ? ' met' + (REDUCE ? '' : ' land') : '') + '"></i></div></div>';
+    });
+    h += '</div>' + (nums ? '' : '<p class="note">기준은 출시 전에 적어 둡니다. 출시하면 측정을 시작합니다.</p>') + '</section>';
+
+    if (!nums) {
+      h += '<div class="empty diag"><strong>아직 숫자가 없습니다.</strong><span>' + (s === 'open' ? 'ship을 누르면 DAU, 리텐션, 유입이 여기에 쌓입니다.' : '출시 다음 날부터 숫자가 쌓입니다.') + '</span></div>';
+      return h;
+    }
+    h += '<div class="tiles">' + tile('DAU · 오늘', '38', '어제 36', { to: 38 }) + tile('WAU', '121', '지난주 108', { to: 121 }) + tile('MAU', '286', '30일', { to: 286 }) + tile('오류 비율', '0.3%', '7일', { to: 0.3, suffix: '%', dec: 1 }) + '</div>';
+    var anim = !drawnChart && !REDUCE; drawnChart = true;
+    h += '<section class="panel diag"><div class="panel-head"><h2>DAU</h2><span class="note">최근 30일</span></div>' + lineChart(DAU, anim) +
+      '<div class="marks-legend">' + MARKS.map(function (m) { return '<span>' + esc(m[1]) + ' · ' + (30 - m[0]) + '일 전</span>'; }).join('') + '</div></section>';
+    h += '<div class="grid2">' +
+      '<section class="panel diag grow"><div class="panel-head"><h2>리텐션</h2><span class="note">출시 후 가입자 기준</span></div>' + bars([['D1', 41], ['D7', 24], ['D30', 17]], 0) + '</section>' +
+      '<section class="panel diag grow"><div class="panel-head"><h2>유입 경로</h2><span class="note">신규 사용자 · 30일</span></div>' + bars([['인스타', 41], ['브랜처 페이지', 22], ['검색', 19], ['직접', 18]], 0) + '</section>' +
+      '</div>';
+    return h;
+  }
+
+  function renderInbox() {
+    var counts = { 'new': 0, replied: 0, archived: 0 };
+    MSGS.forEach(function (m) { counts[m.status]++; });
+    var h = '<div class="toolbar"><div class="filters" role="group" aria-label="문의 상태">';
+    ['new', 'replied', 'archived'].forEach(function (k) {
+      h += '<button type="button" data-filter="' + k + '" aria-pressed="' + (state.filter === k) + '">' + STATUS[k] + ' <span class="tnum">' + counts[k] + '</span></button>';
+    });
+    h += '</div><span class="note tnum">답장까지 평균 1.4일 · 최근 30일</span></div><div class="msgs">';
+    var list = MSGS.filter(function (m) { return m.status === state.filter; });
+    if (!list.length) h += '<div class="empty diag"><strong>' + STATUS[state.filter] + ' 없음.</strong></div>';
+    list.forEach(function (m) {
+      var open = state.open === m.id;
+      h += '<article class="msg diag"><button type="button" class="msg-sum" data-msg="' + m.id + '" aria-expanded="' + open + '">' +
+        '<i class="msg-dot' + (m.status === 'new' ? '' : ' read') + '"></i><span class="msg-from">' + esc(m.from) + '</span><span class="msg-date tnum">' + m.date + '</span>' +
+        '<span class="msg-line">' + esc(m.body.split('\n')[0]) + '</span></button>';
+      if (open) {
+        h += '<div class="msg-body"><p>' + esc(m.body) + '</p>' +
+          '<div class="msg-tools"><span class="note">분류</span>' + ['광고', '제휴', '협업', '기타'].map(function (k) {
+            return '<button type="button" class="pill" data-kind="' + k + '" data-id="' + m.id + '" aria-pressed="' + (m.kind === k) + '">' + k + '</button>';
+          }).join('') + '</div><div class="msg-tools">' +
+          (m.status !== 'replied' ? '<button type="button" class="btn-white diag" data-reply="' + m.id + '" style="padding:8px 14px;font-size:14px">Gmail에서 답장</button>' : '') +
+          (m.status !== 'archived' ? '<button type="button" class="btn-line diag" data-set="archived" data-id="' + m.id + '">보관</button>' : '') +
+          (m.status !== 'new' ? '<button type="button" class="btn-line diag" data-set="new" data-id="' + m.id + '">새 문의로 되돌리기</button>' : '') +
+          '</div></div>';
+      }
+      h += '</article>';
+    });
+    return h + '</div>';
+  }
+
+  /* Grow: numbers fill once, the first time admin opens */
+  function countUp(root) {
+    if (REDUCE) return;
+    root.querySelectorAll('[data-to]').forEach(function (el) {
+      var to = parseFloat(el.dataset.to), dec = +el.dataset.dec || 0, suf = el.dataset.suffix || '', t0 = null, dur = 400;
+      function f(ts) {
+        if (!t0) t0 = ts;
+        var k = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - k, 3), v = to * e;
+        el.textContent = (dec ? v.toFixed(dec) : fmt(Math.round(v))) + suf;
+        if (k < 1) requestAnimationFrame(f);
+      }
+      requestAnimationFrame(f);
+    });
+  }
+
+  /* ======================= Confirm (ship · merge · close) ======================= */
+  var ACT = {
+    ship: { to: 'shipped', help: '공개 카드에 이름과 그린 스퀘어가 켜지고, 측정을 시작합니다.', memo: '메모 (선택)' },
+    merge: { to: 'merged', help: '공개 카드가 "키우는 중"으로 바뀝니다.', memo: '메모 (선택)' },
+    close: { to: 'closed', help: '공개 카드가 "종료"로 바뀝니다. 번호는 지우지 않습니다.', memo: '회고 — 3줄 이상', req: true }
+  };
+  function openConfirm(act) {
+    var a = ACT[act];
+    $('confirm-form').innerHTML =
+      '<div class="sheet-top"><strong style="font-size:20px;font-weight:700" id="confirm-title">' + act + '</strong><span class="note">branch 01 ▸ 핸드머니</span>' +
+      '<button type="button" class="sheet-close" data-close="confirm">취소</button></div>' +
+      '<p class="b-desc">' + a.help + '</p>' +
+      '<div class="cfield"><label for="c-date">날짜</label><input id="c-date" class="tnum" value="' + TODAY + '" inputmode="numeric"></div>' +
+      '<div class="cfield"><label for="c-memo">' + a.memo + '</label><textarea id="c-memo" placeholder="' + (a.req ? '무엇을 했고, 숫자는 어땠고, 무엇을 배웠는지' : '') + '"></textarea></div>' +
+      '<p class="err" id="c-err" role="alert" hidden></p>' +
+      '<div class="sheet-actions"><button type="submit" class="btn-white diag">' + act + ' 확정</button></div>';
+    $('confirm-form').dataset.act = act;
+    showSheet('confirm');
+    setTimeout(function () { $('c-memo').focus(); }, 50);
+  }
+  $('confirm-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var act = this.dataset.act, a = ACT[act], date = $('c-date').value.trim(), memo = $('c-memo').value;
+    if (!/^\d{4}\.\d{2}\.\d{2}$/.test(date)) { $('c-err').textContent = '날짜는 YYYY.MM.DD로 적어 주세요.'; $('c-err').hidden = false; return; }
+    if (a.req && memo.split('\n').filter(function (l) { return l.trim(); }).length < 3) { $('c-err').textContent = '회고를 3줄 이상 적어 주세요.'; $('c-err').hidden = false; return; }
+    if (state.status === 'open' && (a.to === 'shipped')) pendingLand = true;
+    state.status = a.to;
+    if (act === 'ship') state.shipDate = date;
+    state.log.push({ d: date, t: { ship: '출시', merge: '키우기 시작', close: '종료' }[act], c: act === 'close' ? '' : 'green' });
+    $('confirm').close();
+    toast('branch 01 — ' + act + '. ' + date + '에 기록했습니다.');
+    render();
+  });
+
+  function showSheet(id) {
+    var d = $(id);
+    if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', '');
+  }
+
+
+
+  /* ======================= Shell ======================= */
+  function render(opts) {
+    opts = opts || {};
+    $('view-public').hidden = state.view !== 'public';
+    $('view-admin').hidden = state.view !== 'admin';
+    ['public', 'admin'].forEach(function (v) { $('v-' + v).setAttribute('aria-pressed', state.view === v); });
+    ['now', 'after'].forEach(function (p) { $('p-' + p).setAttribute('aria-pressed', state.phase === p); });
+    renderCards();
+    $('fact-branches').textContent = state.status === 'open' ? '1 · 만드는 중' : '1 · ' + PUBLIC_STATUS[state.status];
+    var n = newCount(); $('inbox-badge').textContent = n || ''; $('inbox-badge').hidden = !n;
+    ['main', 'branch', 'inbox'].forEach(function (t) { var b = $('t-' + t); if (state.tab === t) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    var body = $('admin-body');
+    body.innerHTML = state.tab === 'main' ? renderMain() : state.tab === 'branch' ? renderBranch() : renderInbox();
+    if (opts.fade && !REDUCE) { body.classList.remove('fade'); void body.offsetWidth; body.classList.add('fade'); }
+    if (REDUCE || opts.noGrow) body.querySelectorAll('.grow').forEach(function (g) { g.classList.remove('grow'); });
+    if (state.view === 'admin' && !seenAdmin) { seenAdmin = true; countUp(body); }
+    document.body.classList.toggle('on-green', false);
+    if (state.view === 'public') { measure(); update(); }
+  }
+  function fromHash() {
+    var h = location.hash.replace('#', '');
+    if (h === 'admin') { state.view = 'admin'; state.tab = 'main'; }
+    else if (h === 'admin-branch-01') { state.view = 'admin'; state.tab = 'branch'; }
+    else if (h === 'admin-inbox') { state.view = 'admin'; state.tab = 'inbox'; }
+    else state.view = 'public';
+    return h;
+  }
+  function toHash() {
+    var h = state.view === 'public' ? '' : state.tab === 'main' ? 'admin' : state.tab === 'branch' ? 'admin-branch-01' : 'admin-inbox';
+    if (location.hash.replace('#', '') !== h) history.replaceState(null, '', h ? '#' + h : location.pathname + location.search);
+  }
+  function jump(p) { window.scrollTo({ top: trackTop + p * unitPx, behavior: REDUCE ? 'auto' : 'smooth' }); }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) { if (e.target.tagName === 'DIALOG') e.target.close(); if (!e.target.closest('.mini')) closeMini(); return; }
+    if (!b.closest('.mini')) closeMini();
+    if (b.id === 'mini-btn') { var open = $('mini-menu').hidden; $('mini-menu').hidden = !open; b.setAttribute('aria-expanded', open); return; }
+    if (b.dataset.jump) { closeMini(); jump(parseFloat(b.dataset.jump)); return; }
+    if (b.dataset.view) { state.view = b.dataset.view; toHash(); render(); window.scrollTo(0, 0); return; }
+    if (b.dataset.phase) { state.phase = b.dataset.phase; try { localStorage.setItem('brancher-phase', state.phase); } catch (err) {} pendingLand = state.phase === 'after'; resetBranch(); drawnChart = false; render({ fade: true }); return; }
+    if (b.dataset.tab) { state.tab = b.dataset.tab; state.view = 'admin'; toHash(); render({ fade: true }); window.scrollTo(0, 0); return; }
+    if (b.dataset.period) { state.period = +b.dataset.period; render(); return; }
+    if (b.dataset.go) { toast('서비스 주소가 생기면 그곳으로 연결됩니다.'); return; }
+    if (b.dataset.detail) { renderDetail(); showSheet('detail'); return; }
+    if (b.dataset.close) { $(b.dataset.close).close(); return; }
+    if (b.dataset.act) { openConfirm(b.dataset.act); return; }
+    if (b.dataset.filter) { state.filter = b.dataset.filter; state.open = null; render({ noGrow: true }); return; }
+    if (b.dataset.msg) { var id = +b.dataset.msg; state.open = state.open === id ? null : id; render({ noGrow: true }); return; }
+    if (b.dataset.kind) { MSGS.forEach(function (m) { if (m.id === +b.dataset.id) m.kind = b.dataset.kind; }); render({ noGrow: true }); return; }
+    if (b.dataset.reply) { MSGS.forEach(function (m) { if (m.id === +b.dataset.reply) m.status = 'replied'; }); state.open = null; toast('메일 앱에서 답장을 엽니다. 답장함으로 옮겼습니다.'); render({ noGrow: true }); return; }
+    if (b.dataset.set) { MSGS.forEach(function (m) { if (m.id === +b.dataset.id) m.status = b.dataset.set; }); state.open = null; toast(STATUS[b.dataset.set] + '(으)로 옮겼습니다.'); render({ noGrow: true }); return; }
+  });
+  function closeMini() { $('mini-menu').hidden = true; $('mini-btn').setAttribute('aria-expanded', 'false'); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMini(); });
+
+  $('copy-mail').addEventListener('click', function () {
+    var addr = $('mail-addr').textContent;
+    function fallback() { var r = document.createRange(); r.selectNodeContents($('mail-addr')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); toast('주소를 선택했습니다. 복사해서 쓰세요.'); }
+    try { navigator.clipboard.writeText(addr).then(function () { toast('메일 주소를 복사했습니다.'); }, fallback); } catch (err) { fallback(); }
+  });
+  $('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var mail = $('f-mail').value.trim(), body = $('f-body').value.trim(), err = $('form-err');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { err.textContent = '회신 받을 메일 주소를 확인해 주세요.'; err.hidden = false; $('f-mail').focus(); return; }
+    if (!body) { err.textContent = '내용을 적어 주세요.'; err.hidden = false; $('f-body').focus(); return; }
+    err.hidden = true;
+    var btn = $('send'); btn.style.width = btn.offsetWidth + 'px'; void btn.offsetWidth; btn.classList.add('shipping'); $('privacy').hidden = true;
+    setTimeout(function () { $('contact-form').hidden = true; $('sent').hidden = false; }, REDUCE ? 0 : 380);
+  });
+
+  window.addEventListener('hashchange', function () { fromHash(); render(); });
+  var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { measure(); update(); }, 60); });
+
+  buildMini();
+  fromHash();
+  render();
+  signature();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); update(); });
+})();
+</script>
