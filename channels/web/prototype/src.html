@@ -656,33 +656,35 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     var box = document.querySelector('[data-scene="4"] .wrap').getBoundingClientRect(), pad = ph ? 8 : 20;
     var cx0 = box.left - pad, cx1 = box.right + pad, cy0 = box.top - pad, cy1 = box.bottom + pad;
     function clear(x, y, r) { return x + r < cx0 || x - r > cx1 || y + r < cy0 || y - r > cy1; }
-    function edge(x, y) { return Math.min(x, W - x, y, H - y) / Math.min(W, H); }
+    /* the middle stays clean: an ellipse over the content; foliage packs densely outside it */
+    var ex = W * 0.5, ey = H * (ph ? 0.5 : 0.52), erx = W * (ph ? 0.56 : 0.43), ery = H * (ph ? 0.34 : 0.4);
+    function ring(x, y) { var dx = (x - ex) / erx, dy = (y - ey) / ery; return Math.sqrt(dx * dx + dy * dy); }
+    function outside(x, y, r) { var e = ring(x, y) - r / Math.min(erx, ery); var t = 1 + rnd() * 0.1; return rnd() < Math.min(1, (e - t) / 0.12); }
     /* six layers, back to front. Each fades in on its own step of the scroll. */
     var FILL = ['rgba(15,17,16,0.10)', 'rgba(15,17,16,0.20)', '#2E7D5B', '#1B3B2C', '#0F1110', null];
-    var SIZE = [[16, 34], [12, 28], [10, 24], [8, 20], [6, 16]];  /* leaf size range per layer, px */
-    var REACH = [0.24, 0.2, 0.16, 0.12, 0.09];                       /* how far from the edge each layer spreads */
+    var SIZE = [[12, 84], [10, 66], [7, 54], [5, 42], [4, 30]]; /* wide range per layer; small ones far more common */
     var L = [[], [], [], [], [], []];
     var ROT = [0, 45, 90, -45];
     function put(layer, d, x, y, rot) { L[layer].push('<path d="' + d + '" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + rot + ')"/>'); }
-    var N = Math.round((ph ? 1500 : 2600) * Math.min(1, (W * H) / (1440 * 900) + 0.35));
+    var N = Math.round((ph ? 2600 : 4200) * Math.min(1, (W * H) / (1440 * 900) + 0.35));
     for (var i = 0; i < N; i++) {
-      var layer = i % 5, x = rnd() * W, y = rnd() * H, sz = SIZE[layer], s = (sz[0] + rnd() * (sz[1] - sz[0])) * k;
-      if (rnd() > Math.exp(-edge(x, y) / REACH[layer])) continue;
-      if (!clear(x, y, s * 0.75)) continue;
-      put(layer, leaf(s, s, s * 0.48), x, y, ROT[Math.floor(rnd() * 4)]);
+      var layer = i % 5, x = -20 + rnd() * (W + 40), y = -20 + rnd() * (H + 40), sz = SIZE[layer];
+      var s = sz[0] * Math.pow(sz[1] / sz[0], Math.pow(rnd(), 1.8)) * k; /* log scale, biased small */
+      if (!outside(x, y, s * 0.5) || !clear(x, y, s * 0.75)) continue;
+      put(layer, leaf(s, s * (0.8 + rnd() * 0.5), s * 0.48), x, y, ROT[Math.floor(rnd() * 4)]);
     }
-    /* grass along the bottom: thin blades, every layer */
-    for (var gx = -6; gx < W + 6; gx += (ph ? 4 : 5) * (0.5 + rnd())) {
-      var gl = Math.floor(rnd() * 5), gw = (2.5 + rnd() * 3) * k, gh = (18 + rnd() * (90 - gl * 10)) * k;
+    /* grass along the bottom: thin blades, every layer, mixed heights */
+    for (var gx = -6; gx < W + 6; gx += (ph ? 3 : 4) * (0.5 + rnd())) {
+      var gl = Math.floor(rnd() * 5), gw = (2 + rnd() * 4) * k, gh = (14 + Math.pow(rnd(), 1.6) * (110 - gl * 12)) * k;
       var tilt = gh < 40 * k && rnd() < 0.3 ? (rnd() < 0.5 ? 45 : -45) : 0;
-      if (clear(gx, H - gh / 2, gw)) put(gl, leaf(gw, gh, gw * 0.95), gx, H - gh / 2 + 4, tilt);
-      if (rnd() < 0.15) { var th = (8 + rnd() * 18) * k; if (clear(gx, th / 2, gw)) put(gl, leaf(gw, th, gw * 0.95), gx, th / 2 - 3, 0); }
+      if (clear(gx, H - gh / 2, gw) && outside(gx, H - gh, 0)) put(gl, leaf(gw, gh, gw * 0.95), gx, H - gh / 2 + 4, tilt);
+      if (rnd() < 0.15) { var th = (8 + rnd() * 20) * k; if (clear(gx, th / 2, gw)) put(gl, leaf(gw, th, gw * 0.95), gx, th / 2 - 3, 0); }
     }
-    /* blooms: four small leaves around a square; the centre is the green result */
-    var B = ph ? 28 : 54, blooms = [];
-    for (var b = 0; b < B * 8 && blooms.length < B; b++) {
-      var bx = rnd() * W, by = rnd() * H, ps = (5 + rnd() * 5) * k;
-      if (edge(bx, by) > 0.15 || !clear(bx, by, ps * 2.2)) continue;
+    /* blooms: four leaves around a square; the centre is the green result. Sizes vary a lot. */
+    var B = ph ? 40 : 80, blooms = [];
+    for (var b = 0; b < B * 10 && blooms.length < B; b++) {
+      var bx = rnd() * W, by = rnd() * H, ps = 3.5 * Math.pow(4, Math.pow(rnd(), 1.5)) * k;
+      if (!outside(bx, by, ps * 2) || !clear(bx, by, ps * 2.2)) continue;
       var white = rnd() < 0.65, pf = white ? '#FFFFFF' : '#0F1110', o = ps * 0.78, pl = leaf(ps, ps * 1.6, ps * 0.48);
       blooms.push('<g transform="translate(' + bx.toFixed(1) + ' ' + by.toFixed(1) + ')" fill="' + pf + '">' +
         '<path d="' + pl + '" transform="translate(0 ' + (-o) + ')"/><path d="' + pl + '" transform="translate(0 ' + o + ')"/>' +
@@ -693,6 +695,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     $('garden-svg').setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     $('garden-svg').innerHTML = L.map(function (paths, i) { return '<g class="gl"' + (FILL[i] ? ' fill="' + FILL[i] + '"' : '') + '>' + paths.join('') + '</g>'; }).join('');
   }
+
 
   function progress() { return Math.max(0, (window.scrollY - trackTop) / unitPx); }
 
