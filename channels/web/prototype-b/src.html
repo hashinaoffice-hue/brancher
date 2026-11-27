@@ -368,7 +368,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
 <div class="proto">
   <div class="proto-in gutter">
-    <span class="proto-tag">시안 v4.16 · B안</span>
+    <span class="proto-tag">시안 v4.17 · B안</span>
     <div class="seg" role="group" aria-label="화면">
       <button type="button" id="v-public" data-view="public">공개 페이지</button>
       <button type="button" id="v-admin" data-view="admin">관리자 모드</button>
@@ -786,7 +786,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
 
     /* portal: the landed square grows until it fills the screen, staying a square with its diagonal-round corners.
-       Reverse on the way out: it shrinks back down-left onto the branch tip. */
+       Reverse on the way out: it shrinks back into the centre, onto its place. */
     var po = -1;
     if (!REDUCE) {
       if (p >= PO0 && p < 7.17) po = ease(clamp((p - PO0) / (PO1 - PO0), 0, 1));
@@ -797,13 +797,13 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
     else {
       var S = base(S4, H > W, W, H), k = W / S.w;
       var qx = (301.04 - S.x) * k, qy = (144.82 - S.y) * k, qs = 53.28 * k;
-      /* stays a square and grows toward the up-right, the way the branch points: its sharp bottom-left corner
-         (where the branch arrives) glides to the screen's bottom-left corner while the side grows in log scale.
-         Done when it covers the screen and both rounded corners are off it: side ≥ long side / (1 − 16.4%). */
-      var se = 1.02 * Math.max(W, H) / 0.836;
+      /* stays a square and scales about the centre only: its centre sits on the screen's vertical axis at rest (S4)
+         and glides to the screen centre while the side grows in log scale. Done when it covers the screen and both
+         rounded corners are off it: side ≥ long side, and ≥ short side / (1 − 2 × 16.4%). */
+      var se = 1.02 * Math.max(W, H, Math.min(W, H) / 0.672);
       var side = Math.exp(lerp(Math.log(qs), Math.log(se), po)), f = (side - qs) / (se - qs);
-      var ax = lerp(qx, 0, f), ay = lerp(qy + qs, H, f);
-      var x = ax, y = ay - side, pw = side, ph2 = side, r = side * 0.164;
+      var cx = lerp(qx + qs / 2, W / 2, f), cy = lerp(qy + qs / 2, H / 2, f);
+      var x = cx - side / 2, y = cy - side / 2, pw = side, ph2 = side, r = side * 0.164;
       portal.style.left = x.toFixed(1) + 'px'; portal.style.top = y.toFixed(1) + 'px';
       portal.style.width = pw.toFixed(1) + 'px'; portal.style.height = ph2.toFixed(1) + 'px';
       portal.style.borderRadius = r.toFixed(1) + 'px 0 ' + r.toFixed(1) + 'px 0';

@@ -41,7 +41,7 @@
 
 - **콘셉트:** 로고 안을 걷는 홈페이지 — [`channels/web-concept-v4.md`](channels/web-concept-v4.md)
 - **시안 A (v4.12):** https://claude.ai/artifact/FBwWKj9Jxavz52zkwMe2t5 — 지금 '링크가 있는 누구나 볼 수 있음'
-- **시안 B (v4.16):** https://claude.ai/artifact/8u6WQKJ7sbiqVVtanqALk2 — 비공개. A와 카피는 같고 시각 · 연출 · 길이만 다름. 전환을 늘리고 화면이 스크롤을 살짝 늦게 따라옴. 간격 규칙(4–48px 일곱 단계), 문의 문장 제안 → [`channels/web/prototype-b/`](channels/web/prototype-b/README.md). **A/B 결정 대기 (Q17)**
+- **시안 B (v4.17):** https://claude.ai/artifact/8u6WQKJ7sbiqVVtanqALk2 — 비공개. A와 카피는 같고 시각 · 연출 · 길이만 다름. 전환을 늘리고 화면이 스크롤을 살짝 늦게 따라옴. 간격 규칙(4–48px 일곱 단계), 문의 문장 제안 → [`channels/web/prototype-b/`](channels/web/prototype-b/README.md). **A/B 결정 대기 (Q17)**
 - **장면:** 서명 → 이름 → 줄기 → 가지 → 마침표 → 정원 → 문의 → 물러남 (A 약 14.6화면 · B 약 13화면)
 - **카피 확정본:** [`channels/web-copy.md`](channels/web-copy.md)
 - **원본:** [`channels/web/prototype/src.html`](channels/web/prototype/README.md) · 다시 뽑기 `python3 tools/build-web-prototype.py`
@@ -59,7 +59,7 @@
 | # | 질문 | 컨설턴트 제안 |
 |---|---|---|
 | Q18 | 웹 문의 장면 문장 | '만드는 사람이 직접 답합니다.' + 답장 기한(숫자 확인) |
-| Q17 | 웹 시안 A(v4.12)와 B(v4.16) 중 어느 쪽으로 | B — 그린 진입 · 정원 톤 · 길이를 고친 쪽 |
+| Q17 | 웹 시안 A(v4.12)와 B(v4.17) 중 어느 쪽으로 | B — 그린 진입 · 정원 톤 · 길이를 고친 쪽 |
 | Q10 | 운영 웹 코드를 어디에 두나 | 이 저장소 `web/` |
 | Q8 | 인사이트를 직접 만드나 | 분석 도구 + 관리자 화면 한 장 |
 | Q3 | 닫은 가지를 공개하나 | 공개 — 정원의 '가지치기'로 |
