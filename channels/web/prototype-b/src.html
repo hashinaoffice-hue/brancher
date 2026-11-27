@@ -368,7 +368,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
 
 <div class="proto">
   <div class="proto-in gutter">
-    <span class="proto-tag">시안 v4.17 · B안</span>
+    <span class="proto-tag">시안 v4.18 · B안</span>
     <div class="seg" role="group" aria-label="화면">
       <button type="button" id="v-public" data-view="public">공개 페이지</button>
       <button type="button" id="v-admin" data-view="admin">관리자 모드</button>
@@ -688,7 +688,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
       'H' + x.toFixed(1) + 'V' + (y + r).toFixed(1) + 'A' + r.toFixed(1) + ' ' + r.toFixed(1) + ' 0 0 1 ' + (x + r).toFixed(1) + ' ' + y.toFixed(1) + 'Z';
   }
   function buildGarden() {
-    var W = window.innerWidth, H = window.innerHeight, key = W + 'x' + H;
+    var W = viewW(), H = viewH(), key = W + 'x' + H;
     if (key === gardenKey) return; gardenKey = key;
     var ph = W < 700, k = ph ? 0.7 : 1, rnd = rng(20261126);
     var box = document.querySelector('[data-scene="4"] .wrap').getBoundingClientRect(), pad = ph ? 8 : 20;
@@ -736,6 +736,9 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
   }
 
 
+  /* the stage's own size: excludes a desktop scrollbar, so the camera, the portal and the landed square line up */
+  function viewW() { return document.documentElement.clientWidth || window.innerWidth; }
+  function viewH() { return window.innerHeight; } /* no horizontal scrollbar here; clientHeight is the whole page in quirks mode */
   function progress() { return Math.max(0, (window.scrollY - trackTop) / unitPx); }
   var pv = null, follow = 0, lastT = 0, TAU = 0.35; /* seconds: how far the picture trails the scroll */
   function tick(ts) {
@@ -756,7 +759,7 @@ dialog.sheet::backdrop { background: rgba(15, 17, 16, 0.78); }
   function update() {
     if (state.view !== 'public') return;
     if (pv === null) pv = progress();
-    var p = pv, W = window.innerWidth, H = window.innerHeight;
+    var p = pv, W = viewW(), H = viewH();
     var f = camAt(p, W, H);
     $('cam').setAttribute('viewBox', f.x.toFixed(3) + ' ' + f.y.toFixed(3) + ' ' + f.w.toFixed(3) + ' ' + f.h.toFixed(3));
 
